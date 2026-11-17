@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>R DIGITAL</title>
+<meta name="description" content="R DIGITAL — streaming, IA e ferramentas criativas com ativação rápida. Pague por M-Pesa, e-Mola ou BIM.">
+<meta name="theme-color" content="#070B1A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabeçalho fixo, hero curto, catálogo em grelha por categorias, passos, FAQ e rodapé. Marca azul-noite com ouro. */
+:root{
+  --bg:#070B1A; --surface:#0E1530; --surface-2:#151F44; --line:#27335F;
+  --fg:#F2F5FF; --muted:#9FAAD3; --accent:#FFC21A; --accent-fg:#1B1400; --blue:#3A72FF;
+  --ok:#3DDC97; --warn:#FFB020; --bad:#FF6B7A;
+  --font-display:'Sora','Inter',system-ui,sans-serif; --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --radius:14px; color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F4F6FC; --surface:#FFFFFF; --surface-2:#EAEFFB; --line:#D3DBF0;
+    --fg:#0B1230; --muted:#4F5B86; --accent:#F2B100; --accent-fg:#1B1400; --blue:#2358E6;
+    --ok:#0E9F6E; --warn:#B7791F; --bad:#D63A4B; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F4F6FC; --surface:#FFFFFF; --surface-2:#EAEFFB; --line:#D3DBF0;
+  --fg:#0B1230; --muted:#4F5B86; --accent:#F2B100; --accent-fg:#1B1400; --blue:#2358E6;
+  --ok:#0E9F6E; --warn:#B7791F; --bad:#D63A4B; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--font-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--font-display);line-height:1.15;margin:0;text-wrap:balance}
+a{color:var(--accent)}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto}
+.muted{color:var(--muted)}
+[hidden]{display:none!important}
+
+/* Cabeçalho */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+header.top .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:800;font-size:19px;letter-spacing:.2px;
+  background:none;border:0;cursor:pointer;padding:0;margin-inline-end:auto}
+.brand svg{width:24px;height:24px}
+.brand b{color:var(--accent)}
+.nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+select.lang,.btn,.chip-btn{border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:8px 12px;cursor:pointer;min-height:40px}
+.btn{font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.sm{min-height:34px;padding:5px 10px;font-size:13px}
+.btn.green{background:#1FA855;border-color:#1FA855;color:#fff}
+
+/* Hero */
+.hero{padding:38px 0 8px;display:grid;gap:18px}
+.hero h1{font-size:clamp(28px,6.2vw,48px);font-weight:800;max-width:18ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:60ch;color:var(--muted);font-size:16px;margin:0}
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:6px}
+.trust div{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px}
+.trust svg{width:22px;height:22px;flex:none;color:var(--accent)}
+
+/* Catálogo */
+section{padding-top:34px}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sec-head h2{font-size:clamp(21px,4vw,28px)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.tabs button{white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;cursor:pointer;min-height:38px}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.card .row{display:flex;align-items:center;gap:12px}
+.mono{position:relative;overflow:hidden;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:17px;color:#fff;flex:none}
+.mono img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;padding:4px}
+.cat-ai{background:#2F6BFF}.cat-video{background:#D8344A}.cat-music{background:#19A463}.cat-create{background:#8A4DFF}.cat-games{background:#E8731A}
+.card h3{font-size:17px}
+.card .tag{color:var(--muted);font-size:13.5px;margin:0;flex:1}
+.price{font-family:var(--font-display);font-weight:800;font-size:25px;color:var(--accent)}
+.price small{font-size:13px;color:var(--muted);font-weight:600;margin-inline-start:2px}
+.card .foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* Passos / FAQ */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.step b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font-family:var(--font-display);margin-bottom:10px}
+.step h3{font-size:16px;margin-bottom:4px}.step p{margin:0;color:var(--muted);font-size:14px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--muted)}
+.secure{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.secure li{background:var(--surface-2);border-radius:12px;padding:12px 14px;font-size:14px}
+
+footer{margin-top:44px;border-top:1px solid var(--line);padding-top:22px;display:grid;gap:14px;color:var(--muted);font-size:14px}
+footer .links{display:flex;flex-wrap:wrap;gap:6px 18px}
+footer a,footer button.link{color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;font-size:14px}
+
+/* Modal */
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--fg);padding:0;width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgba(3,6,18,.72)}
+.m-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+.m-head h3{font-size:19px}
+.m-body{padding:16px 18px 20px;display:grid;gap:14px}
+.x{background:none;border:0;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;color:var(--muted)}
+label{display:grid;gap:6px;font-weight:600;font-size:14px}
+input[type=text],input[type=email],input[type=password],input[type=tel],input[type=number],textarea,select.field{
+  width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);min-height:44px}
+input[type=file]{padding:10px;border:1px dashed var(--line);border-radius:10px;background:var(--bg);width:100%}
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.methods button{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 6px;cursor:pointer;font-weight:600;min-height:44px}
+.methods button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--bg))}
+.box{background:var(--surface-2);border-radius:12px;padding:12px 14px;display:grid;gap:6px;font-size:14px}
+.box .k{color:var(--muted)}
+.copy{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.copy code{font-size:16px;font-weight:700;letter-spacing:.3px;overflow-wrap:anywhere}
+.sum{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.err{color:var(--bad);font-size:14px;margin:0}
+.okmsg{color:var(--ok);font-size:14px;margin:0}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.demo{background:color-mix(in srgb,var(--warn) 16%,var(--bg));border:1px solid var(--warn);border-radius:10px;padding:8px 12px;font-size:13px;margin-top:14px}
+
+/* Pedidos e admin */
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.st-pending{background:color-mix(in srgb,var(--warn) 22%,transparent);color:var(--warn)}
+.st-paid{background:color-mix(in srgb,var(--blue) 24%,transparent);color:var(--blue)}
+.st-delivered{background:color-mix(in srgb,var(--ok) 22%,transparent);color:var(--ok)}
+.st-rejected{background:color-mix(in srgb,var(--bad) 22%,transparent);color:var(--bad)}
+.olist{display:grid;gap:10px}
+.order{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px;min-width:0}
+.order .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.delivery{background:color-mix(in srgb,var(--ok) 12%,var(--bg));border:1px solid var(--ok);border-radius:10px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat b{display:block;font-family:var(--font-display);font-size:26px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{padding:10px 12px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td input[type=number]{width:100px;min-height:36px;padding:6px 8px}
+td textarea{min-height:60px;min-width:180px}
+.toast{position:fixed;inset-inline:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));margin:auto;max-width:420px;background:var(--fg);color:var(--bg);
+  border-radius:12px;padding:12px 16px;z-index:50;font-weight:600;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.fab{position:fixed;inset-inline-end:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;
+  width:54px;height:54px;border-radius:50%;background:#1FA855;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.4);border:0;cursor:pointer;text-decoration:none}
+.fab svg{width:28px;height:28px;color:#fff}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@media (max-width:420px){.methods{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <button class="brand" id="brand" aria-label="R DIGITAL">
+    <svg viewBox="0 0 24 24" fill="var(--accent)" aria-hidden="true"><path d="M3 18 2 7l5 4 5-7 5 7 5-4-1 11z"/></svg>
+    <span><b>R</b> DIGITAL</span>
+  </button>
+  <nav class="nav" id="nav"></nav>
+</div></header>
+
+<main class="wrap" id="app"></main>
+
+<a class="fab" id="fab" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4Z"/></svg>
+</a>
+
+<dialog id="dlg"></dialog>
+<div id="toastbox" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+"use strict";
+/* ======================================================================
+   CONFIGURAÇÃO — preencha antes de publicar (veja LEIA-ME.md)
+   ====================================================================== */
+const CONFIG = {
+  SUPABASE_URL: "https://qvrlxckrafnhmnenogpl.supabase.co",        // ex.: https://abcdxyz.supabase.co
+  SUPABASE_ANON_KEY: "sb_publishable_Ju2QqdvOMETrjfc9NXvM9g_gXd6oztS",   // chave pública "anon" (é segura de expor; a proteção está nas regras RLS)
+  WHATSAPP: "258859269810", // 258 + número
+  WHATSAPP_SHOW: "859269810",
+  PHONE_SHOW: "863023604",
+  // Contas que aparecem ao cliente no pagamento. Preencha com os SEUS dados.
+  PAYMENTS: {
+    mpesa: { label: "M-Pesa", holder: "Ramos Alberto Ramos", number: "859269810" },
+    emola: { label: "e-Mola", holder: "Ramos Alberto Ramos", number: "863023604" },
+    bim:   { label: "BIM / Millennium BIM", holder: "", number: "", nib: "" }
+  }
+};
+const DEMO = !(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
+
+/* ======================================================================
+   TRADUÇÕES (cliente). O painel de administrador fica em português.
+   ====================================================================== */
+const LANGS = { pt:"Português", en:"English", ar:"العربية", fr:"Français", es:"Español" };
+const T = {
+pt:{
+  login:"Entrar", logout:"Sair", orders:"Meus pedidos", admin:"Painel", shop:"Loja",
+  hero_a:"Tudo o que você precisa", hero_b:"em um só lugar",
+  hero_p:"Streaming, IA e ferramentas criativas com ativação rápida. Escolha, pague por M-Pesa, e-Mola ou BIM e receba o acesso aqui mesmo.",
+  tr1:"Ativação rápida", tr2:"100% seguro", tr3:"Suporte dedicado", tr4:"Preços acessíveis",
+  catalog:"Catálogo", all:"Todos", ai:"IA", video:"Filmes e séries", music:"Música", create:"Criação", games:"Jogos",
+  buy:"Comprar", how:"Como funciona",
+  s1t:"Escolha o produto", s1d:"Veja o catálogo e toque em Comprar.",
+  s2t:"Pague e envie o comprovativo", s2d:"Transfira por M-Pesa, e-Mola ou BIM e anexe a captura do pagamento.",
+  s3t:"Receba o acesso", s3d:"Confirmamos o pagamento e o acesso aparece em Meus pedidos.",
+  safe:"Compra segura", sf1:"Conexão protegida (HTTPS)", sf2:"Nunca pedimos o seu cartão nem o PIN", sf3:"Só você e a R DIGITAL veem os seus pedidos", sf4:"Suporte humano em caso de dúvida",
+  faq:"Perguntas frequentes",
+  q1:"Quanto tempo demora a ativação?", a1:"Depois de confirmarmos o pagamento, o acesso fica disponível em Meus pedidos. Pedidos feitos fora do horário de atendimento são tratados assim que possível.",
+  q2:"Como pago?", a2:"Por M-Pesa, e-Mola ou transferência BIM. Mostramos os dados da conta no momento da compra e você anexa o comprovativo.",
+  q3:"E se o pagamento for rejeitado?", a3:"Você vê o estado do pedido e pode falar connosco pelo suporte para resolver. Pagamentos não confirmados são devolvidos.",
+  q4:"Os meus dados estão seguros?", a4:"Sim. Guardamos apenas o necessário (email e pedidos), com acesso restrito. Veja a Política de Privacidade.",
+  support:"Suporte", call:"Ligações", terms:"Termos", privacy:"Privacidade", refund:"Reembolso",
+  auth_t:"Entrar na R DIGITAL", auth_up:"Criar conta", auth_in:"Entrar", email:"Email", pass:"Palavra-passe",
+  google:"Continuar com Google", facebook:"Continuar com Facebook", or:"ou com email",
+  auth_note:"Ao continuar, você aceita os Termos e a Política de Privacidade.",
+  check_mail:"Conta criada. Verifique o seu email para confirmar e depois entre.",
+  pass_short:"A palavra-passe deve ter pelo menos 8 caracteres.", auth_fail:"Não foi possível entrar. Verifique os dados e tente de novo.",
+  co_t:"Finalizar compra", pay_with:"Pagar com", pay_to:"Faça o pagamento para", holder:"Titular", number:"Número", account:"Conta", nib:"NIB", amount:"Valor",
+  copy:"Copiar", copied:"Copiado", not_cfg:"Dados de pagamento em atualização. Fale com o suporte.",
+  your_phone:"O seu telefone (para contacto)", player:"ID do jogador (Free Fire)", receipt:"Comprovativo de pagamento",
+  receipt_h:"Imagem ou PDF, até 5 MB.", send:"Enviar pedido", sending:"A enviar...", sent:"Pedido enviado! Vamos confirmar o pagamento.",
+  need_receipt:"Anexe o comprovativo de pagamento.", bad_file:"Ficheiro inválido. Use imagem (JPG, PNG, WEBP) ou PDF até 5 MB.",
+  no_orders:"Ainda não tem pedidos.", st_pending:"A aguardar confirmação", st_paid:"Pago, a preparar", st_delivered:"Entregue", st_rejected:"Rejeitado",
+  access:"Acesso", back:"Voltar", close:"Fechar", demo:"Modo demonstração: nada sai do seu navegador. Use admin@demo para ver o painel.",
+  sess_need:"Entre na sua conta para comprar.", soon:"Em breve"
+},
+en:{
+  login:"Sign in", logout:"Sign out", orders:"My orders", admin:"Dashboard", shop:"Shop",
+  hero_a:"Everything you need", hero_b:"in one place",
+  hero_p:"Streaming, AI and creative tools with fast activation. Pick, pay by M-Pesa, e-Mola or BIM and get your access right here.",
+  tr1:"Fast activation", tr2:"100% secure", tr3:"Dedicated support", tr4:"Affordable prices",
+  catalog:"Catalog", all:"All", ai:"AI", video:"Movies & series", music:"Music", create:"Creative", games:"Games",
+  buy:"Buy", how:"How it works",
+  s1t:"Choose a product", s1d:"Browse the catalog and tap Buy.",
+  s2t:"Pay and upload the receipt", s2d:"Send the payment by M-Pesa, e-Mola or BIM and attach the screenshot.",
+  s3t:"Get your access", s3d:"We confirm the payment and your access appears under My orders.",
+  safe:"Safe checkout", sf1:"Protected connection (HTTPS)", sf2:"We never ask for your card or PIN", sf3:"Only you and R DIGITAL can see your orders", sf4:"Real human support if you need help",
+  faq:"Frequently asked questions",
+  q1:"How long does activation take?", a1:"Once we confirm your payment, your access is available under My orders. Orders placed outside support hours are handled as soon as possible.",
+  q2:"How do I pay?", a2:"By M-Pesa, e-Mola or BIM transfer. We show the account details at checkout and you upload the receipt.",
+  q3:"What if my payment is rejected?", a3:"You can see the order status and contact support to sort it out. Unconfirmed payments are refunded.",
+  q4:"Is my data safe?", a4:"Yes. We keep only what is needed (email and orders) with restricted access. See the Privacy Policy.",
+  support:"Support", call:"Calls", terms:"Terms", privacy:"Privacy", refund:"Refunds",
+  auth_t:"Sign in to R DIGITAL", auth_up:"Create account", auth_in:"Sign in", email:"Email", pass:"Password",
+  google:"Continue with Google", facebook:"Continue with Facebook", or:"or with email",
+  auth_note:"By continuing you accept the Terms and the Privacy Policy.",
+  check_mail:"Account created. Check your email to confirm, then sign in.",
+  pass_short:"Password must have at least 8 characters.", auth_fail:"Could not sign in. Check your details and try again.",
+  co_t:"Checkout", pay_with:"Pay with", pay_to:"Send the payment to", holder:"Account holder", number:"Number", account:"Account", nib:"NIB", amount:"Amount",
+  copy:"Copy", copied:"Copied", not_cfg:"Payment details are being updated. Please contact support.",
+  your_phone:"Your phone (for contact)", player:"Player ID (Free Fire)", receipt:"Payment receipt",
+  receipt_h:"Image or PDF, up to 5 MB.", send:"Submit order", sending:"Sending...", sent:"Order sent! We will confirm the payment.",
+  need_receipt:"Attach the payment receipt.", bad_file:"Invalid file. Use an image (JPG, PNG, WEBP) or a PDF up to 5 MB.",
+  no_orders:"You have no orders yet.", st_pending:"Awaiting confirmation", st_paid:"Paid, preparing", st_delivered:"Delivered", st_rejected:"Rejected",
+  access:"Access", back:"Back", close:"Close", demo:"Demo mode: nothing leaves your browser. Use admin@demo to see the dashboard.",
+  sess_need:"Sign in to your account to buy.", soon:"Coming soon"
+},
+ar:{
+  login:"تسجيل الدخول", logout:"خروج", orders:"طلباتي", admin:"لوحة التحكم", shop:"المتجر",
+  hero_a:"كل ما تحتاجه", hero_b:"في مكان واحد",
+  hero_p:"بث، ذكاء اصطناعي وأدوات إبداعية بتفعيل سريع. اختر وادفع عبر M-Pesa أو e-Mola أو BIM واستلم الوصول هنا.",
+  tr1:"تفعيل سريع", tr2:"آمن 100%", tr3:"دعم مخصص", tr4:"أسعار مناسبة",
+  catalog:"الكتالوج", all:"الكل", ai:"ذكاء اصطناعي", video:"أفلام ومسلسلات", music:"موسيقى", create:"إبداع", games:"ألعاب",
+  buy:"شراء", how:"كيف يعمل",
+  s1t:"اختر المنتج", s1d:"تصفح الكتالوج واضغط شراء.",
+  s2t:"ادفع وأرسل الإيصال", s2d:"حوّل عبر M-Pesa أو e-Mola أو BIM وأرفق صورة الدفع.",
+  s3t:"استلم الوصول", s3d:"نؤكد الدفع ويظهر الوصول في طلباتي.",
+  safe:"شراء آمن", sf1:"اتصال محمي (HTTPS)", sf2:"لا نطلب بطاقتك أو الرقم السري أبداً", sf3:"أنت وR DIGITAL فقط ترون طلباتك", sf4:"دعم بشري عند الحاجة",
+  faq:"الأسئلة الشائعة",
+  q1:"كم يستغرق التفعيل؟", a1:"بعد تأكيد الدفع يصبح الوصول متاحاً في طلباتي.",
+  q2:"كيف أدفع؟", a2:"عبر M-Pesa أو e-Mola أو تحويل BIM. نعرض بيانات الحساب عند الشراء وترفق الإيصال.",
+  q3:"ماذا لو رُفض الدفع؟", a3:"يمكنك رؤية حالة الطلب والتواصل مع الدعم. المدفوعات غير المؤكدة تُعاد.",
+  q4:"هل بياناتي آمنة؟", a4:"نعم. نحتفظ بما يلزم فقط (البريد والطلبات) مع وصول مقيّد.",
+  support:"الدعم", call:"اتصال", terms:"الشروط", privacy:"الخصوصية", refund:"الاسترداد",
+  auth_t:"الدخول إلى R DIGITAL", auth_up:"إنشاء حساب", auth_in:"دخول", email:"البريد الإلكتروني", pass:"كلمة المرور",
+  google:"المتابعة عبر Google", facebook:"المتابعة عبر Facebook", or:"أو بالبريد",
+  auth_note:"بالمتابعة فإنك توافق على الشروط وسياسة الخصوصية.",
+  check_mail:"تم إنشاء الحساب. تحقق من بريدك للتأكيد ثم سجّل الدخول.",
+  pass_short:"يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.", auth_fail:"تعذر الدخول. تحقق من البيانات وحاول مجدداً.",
+  co_t:"إتمام الشراء", pay_with:"الدفع عبر", pay_to:"أرسل الدفعة إلى", holder:"اسم صاحب الحساب", number:"الرقم", account:"الحساب", nib:"NIB", amount:"المبلغ",
+  copy:"نسخ", copied:"تم النسخ", not_cfg:"بيانات الدفع قيد التحديث. تواصل مع الدعم.",
+  your_phone:"هاتفك (للتواصل)", player:"معرّف اللاعب (Free Fire)", receipt:"إيصال الدفع",
+  receipt_h:"صورة أو PDF حتى 5 ميغابايت.", send:"إرسال الطلب", sending:"جارٍ الإرسال...", sent:"تم إرسال الطلب! سنؤكد الدفع.",
+  need_receipt:"أرفق إيصال الدفع.", bad_file:"ملف غير صالح. استخدم صورة أو PDF حتى 5 ميغابايت.",
+  no_orders:"لا توجد طلبات بعد.", st_pending:"بانتظار التأكيد", st_paid:"مدفوع، قيد التجهيز", st_delivered:"تم التسليم", st_rejected:"مرفوض",
+  access:"الوصول", back:"رجوع", close:"إغلاق", demo:"وضع تجريبي: لا يغادر شيء متصفحك.",
+  sess_need:"سجّل الدخول للشراء.", soon:"قريباً"
+},
+fr:{
+  login:"Connexion", logout:"Quitter", orders:"Mes commandes", admin:"Tableau de bord", shop:"Boutique",
+  hero_a:"Tout ce dont vous avez besoin", hero_b:"au même endroit",
+  hero_p:"Streaming, IA et outils créatifs avec activation rapide. Choisissez, payez par M-Pesa, e-Mola ou BIM et recevez votre accès ici.",
+  tr1:"Activation rapide", tr2:"100% sécurisé", tr3:"Support dédié", tr4:"Prix accessibles",
+  catalog:"Catalogue", all:"Tout", ai:"IA", video:"Films et séries", music:"Musique", create:"Création", games:"Jeux",
+  buy:"Acheter", how:"Comment ça marche",
+  s1t:"Choisissez un produit", s1d:"Parcourez le catalogue et touchez Acheter.",
+  s2t:"Payez et envoyez le reçu", s2d:"Payez par M-Pesa, e-Mola ou BIM et joignez la capture.",
+  s3t:"Recevez votre accès", s3d:"Nous confirmons le paiement et l'accès apparaît dans Mes commandes.",
+  safe:"Achat sécurisé", sf1:"Connexion protégée (HTTPS)", sf2:"Nous ne demandons jamais votre carte ni votre PIN", sf3:"Seuls vous et R DIGITAL voyez vos commandes", sf4:"Un support humain si besoin",
+  faq:"Questions fréquentes",
+  q1:"Combien de temps dure l'activation ?", a1:"Une fois le paiement confirmé, l'accès est disponible dans Mes commandes.",
+  q2:"Comment payer ?", a2:"Par M-Pesa, e-Mola ou virement BIM. Les coordonnées s'affichent à l'achat et vous joignez le reçu.",
+  q3:"Et si le paiement est rejeté ?", a3:"Vous voyez l'état de la commande et pouvez contacter le support. Les paiements non confirmés sont remboursés.",
+  q4:"Mes données sont-elles en sécurité ?", a4:"Oui. Nous ne gardons que le nécessaire (email et commandes), avec un accès restreint.",
+  support:"Support", call:"Appels", terms:"Conditions", privacy:"Confidentialité", refund:"Remboursement",
+  auth_t:"Connexion à R DIGITAL", auth_up:"Créer un compte", auth_in:"Se connecter", email:"Email", pass:"Mot de passe",
+  google:"Continuer avec Google", facebook:"Continuer avec Facebook", or:"ou par email",
+  auth_note:"En continuant, vous acceptez les Conditions et la Politique de confidentialité.",
+  check_mail:"Compte créé. Vérifiez votre email pour confirmer, puis connectez-vous.",
+  pass_short:"Le mot de passe doit contenir au moins 8 caractères.", auth_fail:"Connexion impossible. Vérifiez vos informations.",
+  co_t:"Finaliser l'achat", pay_with:"Payer avec", pay_to:"Envoyez le paiement à", holder:"Titulaire", number:"Numéro", account:"Compte", nib:"NIB", amount:"Montant",
+  copy:"Copier", copied:"Copié", not_cfg:"Coordonnées de paiement en cours de mise à jour. Contactez le support.",
+  your_phone:"Votre téléphone (contact)", player:"ID du joueur (Free Fire)", receipt:"Reçu de paiement",
+  receipt_h:"Image ou PDF, 5 Mo maximum.", send:"Envoyer la commande", sending:"Envoi...", sent:"Commande envoyée ! Nous confirmons le paiement.",
+  need_receipt:"Joignez le reçu de paiement.", bad_file:"Fichier invalide. Image (JPG, PNG, WEBP) ou PDF, 5 Mo maximum.",
+  no_orders:"Aucune commande pour le moment.", st_pending:"En attente de confirmation", st_paid:"Payé, en préparation", st_delivered:"Livré", st_rejected:"Rejeté",
+  access:"Accès", back:"Retour", close:"Fermer", demo:"Mode démo : rien ne quitte votre navigateur.",
+  sess_need:"Connectez-vous pour acheter.", soon:"Bientôt"
+},
+es:{
+  login:"Entrar", logout:"Salir", orders:"Mis pedidos", admin:"Panel", shop:"Tienda",
+  hero_a:"Todo lo que necesitas", hero_b:"en un solo lugar",
+  hero_p:"Streaming, IA y herramientas creativas con activación rápida. Elige, paga con M-Pesa, e-Mola o BIM y recibe tu acceso aquí.",
+  tr1:"Activación rápida", tr2:"100% seguro", tr3:"Soporte dedicado", tr4:"Precios accesibles",
+  catalog:"Catálogo", all:"Todos", ai:"IA", video:"Películas y series", music:"Música", create:"Creación", games:"Juegos",
+  buy:"Comprar", how:"Cómo funciona",
+  s1t:"Elige el producto", s1d:"Mira el catálogo y toca Comprar.",
+  s2t:"Paga y envía el comprobante", s2d:"Paga por M-Pesa, e-Mola o BIM y adjunta la captura.",
+  s3t:"Recibe tu acceso", s3d:"Confirmamos el pago y el acceso aparece en Mis pedidos.",
+  safe:"Compra segura", sf1:"Conexión protegida (HTTPS)", sf2:"Nunca pedimos tu tarjeta ni tu PIN", sf3:"Solo tú y R DIGITAL ven tus pedidos", sf4:"Soporte humano si lo necesitas",
+  faq:"Preguntas frecuentes",
+  q1:"¿Cuánto tarda la activación?", a1:"Cuando confirmamos el pago, el acceso queda disponible en Mis pedidos.",
+  q2:"¿Cómo pago?", a2:"Por M-Pesa, e-Mola o transferencia BIM. Mostramos los datos al comprar y adjuntas el comprobante.",
+  q3:"¿Y si rechazan mi pago?", a3:"Ves el estado del pedido y puedes contactar con soporte. Los pagos no confirmados se devuelven.",
+  q4:"¿Están seguros mis datos?", a4:"Sí. Guardamos solo lo necesario (email y pedidos), con acceso restringido.",
+  support:"Soporte", call:"Llamadas", terms:"Términos", privacy:"Privacidad", refund:"Reembolsos",
+  auth_t:"Entrar en R DIGITAL", auth_up:"Crear cuenta", auth_in:"Entrar", email:"Email", pass:"Contraseña",
+  google:"Continuar con Google", facebook:"Continuar con Facebook", or:"o con email",
+  auth_note:"Al continuar aceptas los Términos y la Política de Privacidad.",
+  check_mail:"Cuenta creada. Revisa tu email para confirmar y luego entra.",
+  pass_short:"La contraseña debe tener al menos 8 caracteres.", auth_fail:"No se pudo entrar. Revisa los datos.",
+  co_t:"Finalizar compra", pay_with:"Pagar con", pay_to:"Envía el pago a", holder:"Titular", number:"Número", account:"Cuenta", nib:"NIB", amount:"Importe",
+  copy:"Copiar", copied:"Copiado", not_cfg:"Datos de pago en actualización. Contacta con soporte.",
+  your_phone:"Tu teléfono (contacto)", player:"ID del jugador (Free Fire)", receipt:"Comprobante de pago",
+  receipt_h:"Imagen o PDF, hasta 5 MB.", send:"Enviar pedido", sending:"Enviando...", sent:"¡Pedido enviado! Confirmaremos el pago.",
+  need_receipt:"Adjunta el comprobante de pago.", bad_file:"Archivo no válido. Imagen (JPG, PNG, WEBP) o PDF hasta 5 MB.",
+  no_orders:"Aún no tienes pedidos.", st_pending:"Pendiente de confirmación", st_paid:"Pagado, preparando", st_delivered:"Entregado", st_rejected:"Rechazado",
+  access:"Acceso", back:"Volver", close:"Cerrar", demo:"Modo demo: nada sale de tu navegador.",
+  sess_need:"Entra en tu cuenta para comprar.", soon:"Próximamente"
+}};
+const TAG = {
+ "chatgpt-plus":{pt:"IA mais poderosa para o seu dia a dia",en:"The most powerful AI for your daily life",ar:"أقوى ذكاء اصطناعي ليومك",fr:"L'IA la plus puissante au quotidien",es:"La IA más potente para tu día a día"},
+ "gemini":{pt:"A nova geração da IA do Google",en:"Google's next-generation AI",ar:"الجيل الجديد من ذكاء Google",fr:"La nouvelle génération d'IA de Google",es:"La nueva generación de IA de Google"},
+ "grok":{pt:"IA sem limites, da X",en:"Limitless AI, from X",ar:"ذكاء اصطناعي بلا حدود من X",fr:"Une IA sans limites, signée X",es:"IA sin límites, de X"},
+ "canva":{pt:"Designs incríveis para todos",en:"Great designs for everyone",ar:"تصاميم رائعة للجميع",fr:"Des designs superbes pour tous",es:"Diseños increíbles para todos"},
+ "netflix":{pt:"Filmes, séries e muito mais",en:"Movies, series and much more",ar:"أفلام ومسلسلات وأكثر",fr:"Films, séries et bien plus",es:"Películas, series y mucho más"},
+ "spotify":{pt:"Música sem anúncios, sempre",en:"Ad-free music, always",ar:"موسيقى بلا إعلانات دائماً",fr:"De la musique sans pub, toujours",es:"Música sin anuncios, siempre"},
+ "hbo":{pt:"As melhores séries e filmes",en:"The best series and movies",ar:"أفضل المسلسلات والأفلام",fr:"Les meilleures séries et films",es:"Las mejores series y películas"},
+ "iptv":{pt:"Canais do mundo todo na sua TV",en:"Channels from around the world on your TV",ar:"قنوات من العالم على تلفازك",fr:"Des chaînes du monde entier sur votre TV",es:"Canales de todo el mundo en tu TV"},
+ "apple-music":{pt:"Sua trilha sonora favorita",en:"Your favorite soundtrack",ar:"موسيقاك المفضلة",fr:"Votre bande-son préférée",es:"Tu banda sonora favorita"},
+ "crunchyroll":{pt:"Animes dublados e legendados",en:"Dubbed and subtitled anime",ar:"أنمي مدبلج ومترجم",fr:"Des animes doublés et sous-titrés",es:"Anime doblado y subtitulado"},
+ "capcut":{pt:"Edição profissional no seu celular",en:"Pro editing on your phone",ar:"مونتاج احترافي على هاتفك",fr:"Montage pro sur votre téléphone",es:"Edición profesional en tu móvil"},
+ "free-fire":{pt:"Diamantes para o seu jogo",en:"Diamonds for your game",ar:"جواهر للعبتك",fr:"Des diamants pour votre jeu",es:"Diamantes para tu juego"}
+};
+const POLICY = {
+ terms:{
+  pt:["Termos de uso","Os produtos vendidos são assinaturas e serviços digitais de terceiros, ativados em contas de acesso. Ao comprar, você confirma que os dados fornecidos são verdadeiros e que cumprirá as regras de uso de cada plataforma. O acesso é pessoal. A R DIGITAL pode recusar ou cancelar pedidos com suspeita de fraude, devolvendo o valor pago."],
+  en:["Terms of use","Products are third-party digital subscriptions and services activated on access accounts. By buying, you confirm your details are true and that you will follow each platform's usage rules. Access is personal. R DIGITAL may refuse or cancel orders suspected of fraud, refunding the amount paid."]},
+ privacy:{
+  pt:["Política de privacidade","Recolhemos apenas o necessário: email, nome (se fornecido), telefone e dados dos pedidos, incluindo o comprovativo de pagamento. Estes dados servem para processar e entregar a sua compra e para suporte. Ficam guardados em servidores protegidos, com acesso restrito a si e à equipa R DIGITAL. Não vendemos nem partilhamos os seus dados. Nunca guardamos dados de cartão nem PIN. Pode pedir a eliminação da sua conta pelo suporte."],
+  en:["Privacy policy","We collect only what is needed: email, name (if given), phone and order data, including the payment receipt. We use it to process and deliver your purchase and for support. It is stored on protected servers, with access limited to you and the R DIGITAL team. We do not sell or share your data. We never store card data or PINs. You can ask for your account to be deleted through support."]},
+ refund:{
+  pt:["Reembolsos e garantia","Se o pagamento não for confirmado ou o produto não puder ser entregue, devolvemos o valor. Se o acesso entregue não funcionar, contacte o suporte e corrigimos ou substituímos. Os prazos de garantia de cada produto são informados no momento da entrega."],
+  en:["Refunds and warranty","If the payment is not confirmed or the product cannot be delivered, we refund the amount. If the delivered access does not work, contact support and we will fix or replace it. Warranty periods for each product are stated at delivery."]}
+};
+
+/* ======================================================================
+   UTILITÁRIOS
+   ====================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("rd_"+k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("rd_"+k, JSON.stringify(v)); }catch(e){} }
+};
+const fmt = n => `${Number(n).toLocaleString("pt-PT",{maximumFractionDigits:2})} MT`;
+const fmtDate = d => new Date(d).toLocaleString("pt-PT",{dateStyle:"short",timeStyle:"short"});
+const CATS = ["ai","video","music","create","games"];
+const ALLOWED = ["image/jpeg","image/png","image/webp","application/pdf"];
+
+const S = { lang:"pt", products:[], user:null, profile:null, view:"shop", cat:"all", pending:null, orders:[], adminTab:"orders" };
+const t = k => (T[S.lang] && T[S.lang][k]) ?? T.en[k] ?? T.pt[k] ?? k;
+const tag = slug => (TAG[slug] && (TAG[slug][S.lang] || TAG[slug].en)) || "";
+const policy = k => POLICY[k][S.lang] || POLICY[k].en;
+
+function toast(msg){
+  const box = $("#toastbox"); box.innerHTML = `<div class="toast">${esc(msg)}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(()=>{ box.innerHTML=""; }, 3200);
+}
+function initials(n){ return String(n).replace(/[^A-Za-z0-9 ]/g,"").split(" ").filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase() || "R"; }
+async function copyText(txt, btn){
+  try{ await navigator.clipboard.writeText(txt); const o = btn.textContent; btn.textContent = t("copied"); setTimeout(()=>btn.textContent=o,1400); }
+  catch(e){ const r = document.createRange(); r.selectNodeContents(btn.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+}
+
+/* ======================================================================
+   CAMADA DE DADOS: Supabase real, ou modo demonstração (localStorage)
+   ====================================================================== */
+const SEED = [
+ ["chatgpt-plus","ChatGPT Plus","ai",229,10,false,true],["gemini","Gemini","ai",229,20,false,true],["grok","Grok","ai",310,30,false,true],
+ ["canva","Canva","create",280,40,false,true],["netflix","Netflix","video",229,50,false,true],["spotify","Spotify Premium","music",100,60,false,true],
+ ["hbo","HBO","video",269,70,false,true],["iptv","IPTV","video",439,80,false,true],["apple-music","Apple Music","music",159,90,false,true],
+ ["crunchyroll","Crunchyroll","video",419,100,false,true],["capcut","CapCut","create",199,110,false,true],["free-fire","Recarga Free Fire","games",0,120,true,false]
+].map(([slug,name,category,price,sort,needs_player_id,active])=>({id:slug,slug,name,category,price,sort,needs_player_id,active}));
+
+let sb = null;
+const api = DEMO ? {
+  async init(){ const u = store.get("user", null); return u ? { user:u, profile:{ id:u.id, email:u.email, is_admin:u.email==="admin@demo" } } : null; },
+  async signIn(email){ const u = { id:"u_"+email, email }; store.set("user", u); return this.init(); },
+  async signUp(email){ await this.signIn(email); return { needsConfirm:false }; },
+  async oauth(p){ await this.signIn("cliente@"+p+".demo"); location.reload(); },
+  async signOut(){ store.set("user", null); },
+  async products(){ return store.get("products", SEED); },
+  async saveProduct(p){ const l = store.get("products", SEED); const i = l.findIndex(x=>x.id===p.id); if(i>=0) l[i]={...l[i],...p}; else l.push({...p,id:p.slug}); store.set("products", l); },
+  async myOrders(){ return store.get("orders", []).filter(o=>o.user_id===S.user.id).sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
+  async createOrder(o){ const p = S.products.find(x=>x.id===o.product_id); const l = store.get("orders", []);
+    l.push({ id:"o"+Date.now(), user_id:S.user.id, profiles:{email:S.user.email}, product_id:p.id, product_name:p.name, amount:p.price, method:o.method, phone:o.phone, player_id:o.player_id,
+      receipt_path:o.file ? "demo:"+o.file.name : null, status:"pending", delivery_note:null, created_at:new Date().toISOString() });
+    store.set("orders", l); },
+  async adminOrders(){ return store.get("orders", []).sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
+  async setOrder(id, status, note){ const l = store.get("orders", []); const o = l.find(x=>x.id===id); o.status=status; o.delivery_note=note||null; store.set("orders", l); },
+  async adminUsers(){ const u = store.get("user", null); return u ? [{ id:u.id, email:u.email, provider:"demo", created_at:new Date().toISOString(), last_sign_in_at:new Date().toISOString(), orders_count:store.get("orders",[]).length }] : []; },
+  async receiptUrl(){ return null; }
+} : {
+  async init(){
+    sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true } });
+    const { data } = await sb.auth.getSession();
+    if(!data.session) return null;
+    const u = data.session.user;
+    const { data:prof } = await sb.from("profiles").select("*").eq("id", u.id).maybeSingle();
+    return { user:{ id:u.id, email:u.email }, profile: prof || { id:u.id, email:u.email, is_admin:false } };
+  },
+  async signIn(email, pw){ const { error } = await sb.auth.signInWithPassword({ email, password:pw }); if(error) throw error; return this.init(); },
+  async signUp(email, pw){ const { data, error } = await sb.auth.signUp({ email, password:pw, options:{ emailRedirectTo: location.origin } }); if(error) throw error; return { needsConfirm: !data.session }; },
+  async oauth(provider){ const { error } = await sb.auth.signInWithOAuth({ provider, options:{ redirectTo: location.origin } }); if(error) throw error; },
+  async signOut(){ await sb.auth.signOut(); },
+  async products(){ const { data, error } = await sb.from("products").select("*").order("sort"); if(error) throw error; return data; },
+  async saveProduct(p){ if(p.id){ const { id, ...rest } = p; const { error } = await sb.from("products").update(rest).eq("id", id); if(error) throw error; }
+    else { const { error } = await sb.from("products").insert(p); if(error) throw error; } },
+  async myOrders(){ const { data, error } = await sb.from("orders").select("*").order("created_at",{ascending:false}); if(error) throw error; return data; },
+  async createOrder(o){
+    let path = null;
+    if(o.file){
+      const ext = (o.file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,5);
+      path = `${S.user.id}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+      const up = await sb.storage.from("receipts").upload(path, o.file, { contentType:o.file.type, upsert:false });
+      if(up.error) throw up.error;
+    }
+    const { error } = await sb.from("orders").insert({ product_id:o.product_id, method:o.method, phone:o.phone || null, player_id:o.player_id || null, receipt_path:path });
+    if(error) throw error;
+  },
+  async adminOrders(){ const { data, error } = await sb.from("orders").select("*, profiles(email,full_name)").order("created_at",{ascending:false}).limit(300); if(error) throw error; return data; },
+  async setOrder(id, status, note){ const { error } = await sb.from("orders").update({ status, delivery_note: note || null }).eq("id", id); if(error) throw error; },
+  async adminUsers(){ const { data, error } = await sb.rpc("admin_list_users"); if(error) throw error; return data; },
+  async receiptUrl(path){ const { data, error } = await sb.storage.from("receipts").createSignedUrl(path, 300); if(error) throw error; return data.signedUrl; }
+};
+
+/* ======================================================================
+   INTERFACE
+   ====================================================================== */
+function openDlg(html){ const d = $("#dlg"); d.innerHTML = html; if(!d.open) d.showModal(); }
+function closeDlg(){ const d = $("#dlg"); if(d.open) d.close(); }
+$("#dlg").addEventListener("click", e => { if(e.target.id === "dlg") closeDlg(); });
+
+function renderNav(){
+  const langOpts = Object.entries(LANGS).map(([k,v]) => `<option value="${k}" ${k===S.lang?"selected":""}>${esc(v)}</option>`).join("");
+  let h = `<select class="lang" id="langSel" aria-label="Language">${langOpts}</select>`;
+  if(S.user){
+    h += `<button class="btn" data-go="orders">${esc(t("orders"))}</button>`;
+    if(S.profile && S.profile.is_admin) h += `<button class="btn" data-go="admin">${esc(t("admin"))}</button>`;
+    h += `<button class="btn" id="outBtn">${esc(t("logout"))}</button>`;
+  } else {
+    h += `<button class="btn primary" id="inBtn">${esc(t("login"))}</button>`;
+  }
+  $("#nav").innerHTML = h;
+}
+
+function trustIcons(){
+  const bolt = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>';
+  const shield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>';
+  const head = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1"/><rect x="17" y="14" width="4" height="6" rx="1"/></svg>';
+  const tagi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13 13 20a2 2 0 0 1-3 0L3 13V4h9l8 8a2 2 0 0 1 0 1z"/><circle cx="7.5" cy="8.5" r="1"/></svg>';
+  return [bolt, shield, head, tagi];
+}
+
+function renderShop(){
+  const ic = trustIcons();
+  const list = S.products.filter(p => p.active && (S.cat === "all" || p.category === S.cat));
+  const tabs = ["all", ...CATS].map(c => `<button data-cat="${c}" aria-pressed="${S.cat===c}">${esc(t(c))}</button>`).join("");
+  const cards = list.map(p => `
+    <article class="card">
+      <div class="row"><div class="mono cat-${esc(p.category)}" aria-hidden="true"><span>${esc(initials(p.name))}</span><img src="img/${esc(p.slug)}.png" alt="" loading="lazy" onerror="this.remove()"></div><h3>${esc(p.name)}</h3></div>
+      <p class="tag">${esc(tag(p.slug))}</p>
+      <div class="foot"><div class="price">${esc(Number(p.price).toLocaleString("pt-PT"))}<small>MT</small></div>
+        <button class="btn primary" data-buy="${esc(p.id)}">${esc(t("buy"))}</button></div>
+    </article>`).join("");
+  const faq = [1,2,3,4].map(i => `<details><summary>${esc(t("q"+i))}</summary><p>${esc(t("a"+i))}</p></details>`).join("");
+  return `
+  <section class="hero" style="padding-top:38px">
+    <h1>${esc(t("hero_a"))} <em>${esc(t("hero_b"))}</em></h1>
+    <p>${esc(t("hero_p"))}</p>
+    <div class="trust">${[1,2,3,4].map(i=>`<div>${ic[i-1]}<span>${esc(t("tr"+i))}</span></div>`).join("")}</div>
+    ${DEMO ? `<div class="demo">${esc(t("demo"))}</div>` : ""}
+  </section>
+  <section id="catalog">
+    <div class="sec-head"><h2>${esc(t("catalog"))}</h2></div>
+    <div class="tabs" role="group">${tabs}</div>
+    <div class="grid" style="margin-top:14px">${cards}</div>
+  </section>
+  <section>
+    <div class="sec-head"><h2>${esc(t("how"))}</h2></div>
+    <div class="steps">
+      ${[1,2,3].map(i=>`<div class="step"><b>${i}</b><h3>${esc(t("s"+i+"t"))}</h3><p>${esc(t("s"+i+"d"))}</p></div>`).join("")}
+    </div>
+  </section>
+  <section>
+    <div class="sec-head"><h2>${esc(t("safe"))}</h2></div>
+    <ul class="secure">${[1,2,3,4].map(i=>`<li>${esc(t("sf"+i))}</li>`).join("")}</ul>
+  </section>
+  <section>
+    <div class="sec-head"><h2>${esc(t("faq"))}</h2></div>
+    ${faq}
+  </section>`;
+}
+
+function renderOrders(){
+  const rows = S.orders.map(o => `
+    <div class="order">
+      <div class="top"><strong>${esc(o.product_name)}</strong><span class="badge st-${esc(o.status)}">${esc(t("st_"+o.status))}</span></div>
+      <div class="muted">${esc(fmtDate(o.created_at))} · ${esc(fmt(o.amount))} · ${esc((CONFIG.PAYMENTS[o.method]||{}).label || o.method)}</div>
+      ${o.delivery_note ? `<div><div class="muted" style="margin-bottom:4px">${esc(t("access"))}</div><div class="delivery">${esc(o.delivery_note)}</div></div>` : ""}
+    </div>`).join("");
+  return `<section><div class="sec-head"><h2>${esc(t("orders"))}</h2><button class="btn" data-go="shop">${esc(t("back"))}</button></div>
+    <div class="olist">${rows || `<p class="muted">${esc(t("no_orders"))}</p>`}</div></section>`;
+}
+
+/* ---------- Painel do administrador (português) ---------- */
+const ST_PT = { pending:"Pendente", paid:"Pago", delivered:"Entregue", rejected:"Rejeitado" };
+async function renderAdmin(){
+  const tabs = [["orders","Pedidos"],["clients","Clientes"],["products","Produtos"]]
+    .map(([k,v]) => `<button data-atab="${k}" aria-pressed="${S.adminTab===k}">${v}</button>`).join("");
+  let body = `<p class="muted">A carregar...</p>`;
+  $("#app").innerHTML = `<section><div class="sec-head"><h2>Painel de administrador</h2><button class="btn" data-go="shop">Ver loja</button></div>
+    <div class="tabs" style="margin-bottom:14px">${tabs}</div><div id="adminBody">${body}</div></section>`;
+  try{
+    if(S.adminTab === "orders") body = await adminOrdersHtml();
+    else if(S.adminTab === "clients") body = await adminClientsHtml();
+    else body = adminProductsHtml();
+  }catch(e){ body = `<p class="err">Erro ao carregar: ${esc(e.message || e)}</p>`; }
+  const el = $("#adminBody"); if(el) el.innerHTML = body;
+}
+async function adminOrdersHtml(){
+  const list = await api.adminOrders();
+  const c = s => list.filter(o => o.status === s).length;
+  const total = list.filter(o => o.status === "paid" || o.status === "delivered").reduce((a,o)=>a+Number(o.amount),0);
+  const stats = `<div class="stats">
+    <div class="stat"><b>${c("pending")}</b><span class="muted">Pendentes</span></div>
+    <div class="stat"><b>${c("paid")}</b><span class="muted">Pagos por entregar</span></div>
+    <div class="stat"><b>${c("delivered")}</b><span class="muted">Entregues</span></div>
+    <div class="stat"><b>${esc(fmt(total))}</b><span class="muted">Vendas confirmadas</span></div></div>`;
+  const rows = list.map(o => `<tr>
+    <td>${esc(fmtDate(o.created_at))}</td>
+    <td>${esc((o.profiles && o.profiles.email) || "")}${o.phone ? `<br><span class="muted">${esc(o.phone)}</span>` : ""}</td>
+    <td><strong>${esc(o.product_name)}</strong><br><span class="muted">${esc(fmt(o.amount))} · ${esc((CONFIG.PAYMENTS[o.method]||{}).label || o.method)}</span>${o.player_id ? `<br>ID: <b>${esc(o.player_id)}</b>` : ""}</td>
+    <td>${o.receipt_path ? `<button class="btn sm" data-receipt="${esc(o.receipt_path)}">Ver comprovativo</button>` : '<span class="muted">sem anexo</span>'}</td>
+    <td><span class="badge st-${esc(o.status)}">${esc(ST_PT[o.status])}</span></td>
+    <td><textarea id="note-${esc(o.id)}" placeholder="Acesso / mensagem para o cliente" aria-label="Nota de entrega">${esc(o.delivery_note || "")}</textarea>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+        <button class="btn sm" data-set="paid" data-id="${esc(o.id)}">Pago</button>
+        <button class="btn sm primary" data-set="delivered" data-id="${esc(o.id)}">Entregar</button>
+        <button class="btn sm" data-set="rejected" data-id="${esc(o.id)}">Rejeitar</button>
+      </div></td></tr>`).join("");
+  return stats + `<div class="tbl"><table><thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Prova</th><th>Estado</th><th>Ação</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="6" class="muted">Sem pedidos.</td></tr>'}</tbody></table></div>`;
+}
+async function adminClientsHtml(){
+  const list = await api.adminUsers();
+  const never = list.filter(u => !u.last_sign_in_at).length;
+  const stats = `<div class="stats"><div class="stat"><b>${list.length}</b><span class="muted">Contas criadas</span></div>
+    <div class="stat"><b>${list.length-never}</b><span class="muted">Já entraram</span></div>
+    <div class="stat"><b>${never}</b><span class="muted">Nunca entraram</span></div></div>`;
+  const rows = list.map(u => `<tr><td>${esc(u.email || "")}</td><td>${esc(u.provider)}</td><td>${esc(fmtDate(u.created_at))}</td>
+    <td>${u.last_sign_in_at ? esc(fmtDate(u.last_sign_in_at)) : '<span class="badge st-pending">nunca entrou</span>'}</td><td>${esc(u.orders_count)}</td></tr>`).join("");
+  return stats + `<div class="tbl"><table><thead><tr><th>Email</th><th>Entrada por</th><th>Criada em</th><th>Último acesso</th><th>Pedidos</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="5" class="muted">Sem clientes.</td></tr>'}</tbody></table></div>`;
+}
+function adminProductsHtml(){
+  const rows = S.products.map(p => `<tr>
+    <td><strong>${esc(p.name)}</strong><br><span class="muted">${esc(p.slug)}</span></td>
+    <td><input type="number" min="0" step="1" id="pr-${esc(p.id)}" value="${esc(p.price)}" aria-label="Preço de ${esc(p.name)}"></td>
+    <td><label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" id="ac-${esc(p.id)}" ${p.active?"checked":""}> Visível</label></td>
+    <td><button class="btn sm primary" data-saveprod="${esc(p.id)}">Guardar</button></td></tr>`).join("");
+  const opts = CATS.map(c => `<option value="${c}">${esc(T.pt[c])}</option>`).join("");
+  return `<div class="tbl"><table><thead><tr><th>Produto</th><th>Preço (MT)</th><th>Estado</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+    <h3 style="margin:22px 0 10px;font-size:18px">Novo produto</h3>
+    <form id="newProd" class="box" style="max-width:420px">
+      <label>Nome<input type="text" id="np-name" required maxlength="60"></label>
+      <label>Categoria<select class="field" id="np-cat">${opts}</select></label>
+      <label>Preço (MT)<input type="number" id="np-price" min="0" step="1" required></label>
+      <label style="flex-direction:row;display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" id="np-pid"> Pede ID do jogador</label>
+      <button class="btn primary" type="submit">Adicionar</button></form>`;
+}
+
+/* ---------- Modais ---------- */
+function authModal(msg){
+  openDlg(`<div class="m-head"><h3>${esc(t("auth_t"))}</h3><button class="x" data-close aria-label="${esc(t("close"))}">×</button></div>
+  <div class="m-body">
+    ${S.pending ? `<p class="muted" style="margin:0">${esc(t("sess_need"))}</p>` : ""}
+    <button class="btn block" data-oauth="google">${esc(t("google"))}</button>
+    <button class="btn block" data-oauth="facebook">${esc(t("facebook"))}</button>
+    <div class="or">${esc(t("or"))}</div>
+    <form id="authForm" style="display:grid;gap:12px">
+      <label>${esc(t("email"))}<input type="email" id="au-email" required autocomplete="email"></label>
+      <label>${esc(t("pass"))}<input type="password" id="au-pass" required minlength="8" autocomplete="current-password"></label>
+      <p class="err" id="au-err" role="alert">${esc(msg || "")}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn primary" type="submit" data-mode="in">${esc(t("auth_in"))}</button>
+        <button class="btn" type="submit" data-mode="up">${esc(t("auth_up"))}</button>
+      </div>
+    </form>
+    <p class="muted" style="margin:0;font-size:13px">${esc(t("auth_note"))}</p>
+  </div>`);
+}
+
+let coState = { method:"mpesa" };
+function payBlock(method, amount){
+  const p = CONFIG.PAYMENTS[method];
+  const rows = [];
+  if(p.holder) rows.push(`<div><span class="k">${esc(t("holder"))}:</span> <b>${esc(p.holder)}</b></div>`);
+  if(method === "bim"){
+    if(p.number) rows.push(`<div class="copy"><span><span class="k">${esc(t("account"))}:</span> <code>${esc(p.number)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.number)}">${esc(t("copy"))}</button></div>`);
+    if(p.nib) rows.push(`<div class="copy"><span><span class="k">${esc(t("nib"))}:</span> <code>${esc(p.nib)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.nib)}">${esc(t("copy"))}</button></div>`);
+  } else if(p.number){
+    rows.push(`<div class="copy"><span><span class="k">${esc(t("number"))}:</span> <code>${esc(p.number)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.number)}">${esc(t("copy"))}</button></div>`);
+  }
+  if(!rows.length) return `<div class="box"><span>${esc(t("not_cfg"))}</span></div>`;
+  return `<div class="box"><div class="k">${esc(t("pay_to"))}</div>${rows.join("")}<div><span class="k">${esc(t("amount"))}:</span> <b>${esc(fmt(amount))}</b></div></div>`;
+}
+function checkoutModal(p){
+  const methods = Object.entries(CONFIG.PAYMENTS).map(([k,v]) => `<button type="button" data-method="${k}" aria-pressed="${coState.method===k}">${esc(v.label.split(" ")[0])}</button>`).join("");
+  openDlg(`<div class="m-head"><h3>${esc(t("co_t"))}</h3><button class="x" data-close aria-label="${esc(t("close"))}">×</button></div>
+  <form class="m-body" id="coForm" data-pid="${esc(p.id)}">
+    <div class="sum"><strong>${esc(p.name)}</strong><span class="price" style="font-size:21px">${esc(fmt(p.price))}</span></div>
+    <div><div style="font-weight:600;font-size:14px;margin-bottom:8px">${esc(t("pay_with"))}</div><div class="methods">${methods}</div></div>
+    <div id="payInfo">${payBlock(coState.method, p.price)}</div>
+    <label>${esc(t("your_phone"))}<input type="tel" id="co-phone" inputmode="tel" autocomplete="tel" maxlength="20"></label>
+    ${p.needs_player_id ? `<label>${esc(t("player"))}<input type="text" id="co-pid" required maxlength="24" inputmode="numeric"></label>` : ""}
+    <label>${esc(t("receipt"))}<input type="file" id="co-file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="muted" style="font-weight:400">${esc(t("receipt_h"))}</span></label>
+    <p class="err" id="co-err" role="alert"></p>
+    <button class="btn primary block" type="submit" id="coBtn">${esc(t("send"))}</button>
+  </form>`);
+}
+function policyModal(k){
+  const [title, text] = policy(k);
+  openDlg(`<div class="m-head"><h3>${esc(title)}</h3><button class="x" data-close aria-label="${esc(t("close"))}">×</button></div><div class="m-body"><p style="margin:0">${esc(text)}</p></div>`);
+}
+
+function renderFooter(){
+  return `<footer><div><strong style="color:var(--fg)">R DIGITAL</strong> · Streaming &amp; Mais</div>
+    <div>${esc(t("support"))} WhatsApp: <b style="color:var(--fg)">${esc(CONFIG.WHATSAPP_SHOW)}</b> · ${esc(t("call"))}: <b style="color:var(--fg)">${esc(CONFIG.PHONE_SHOW)}</b></div>
+    <div class="links"><button class="link" data-policy="terms">${esc(t("terms"))}</button><button class="link" data-policy="privacy">${esc(t("privacy"))}</button><button class="link" data-policy="refund">${esc(t("refund"))}</button></div></footer>`;
+}
+
+async function render(){
+  document.documentElement.lang = S.lang;
+  document.documentElement.dir = S.lang === "ar" ? "rtl" : "ltr";
+  $("#fab").href = `https://wa.me/${CONFIG.WHATSAPP}`;
+  renderNav();
+  if(S.view === "admin" && S.profile && S.profile.is_admin){ await renderAdmin(); $("#app").insertAdjacentHTML("beforeend", renderFooter()); return; }
+  if(S.view === "orders" && S.user){
+    try{ S.orders = await api.myOrders(); }catch(e){ S.orders = []; }
+    $("#app").innerHTML = renderOrders() + renderFooter(); return;
+  }
+  S.view = "shop";
+  $("#app").innerHTML = renderShop() + renderFooter();
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click", async e => {
+  const el = e.target.closest("button, a");
+  if(!el) return;
+  const d = el.dataset;
+  if(el.id === "brand"){ S.view = "shop"; render(); window.scrollTo(0,0); }
+  else if(el.id === "inBtn"){ S.pending = null; authModal(); }
+  else if(el.id === "outBtn"){ try{ await api.signOut(); }catch(_){} S.user = null; S.profile = null; S.view = "shop"; render(); }
+  else if(d.go){ S.view = d.go; render(); window.scrollTo(0,0); }
+  else if(d.cat){ S.cat = d.cat; render(); }
+  else if(d.close !== undefined){ closeDlg(); }
+  else if(d.policy){ policyModal(d.policy); }
+  else if(d.buy){
+    const p = S.products.find(x => String(x.id) === d.buy); if(!p) return;
+    if(!S.user){ S.pending = p.id; authModal(); } else { coState.method = "mpesa"; checkoutModal(p); }
+  }
+  else if(d.method){
+    coState.method = d.method;
+    document.querySelectorAll("[data-method]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.method === d.method)));
+    const p = S.products.find(x => String(x.id) === $("#coForm").dataset.pid);
+    $("#payInfo").innerHTML = payBlock(d.method, p.price);
+  }
+  else if(d.copy){ copyText(d.copy, el); }
+  else if(d.oauth){ try{ await api.oauth(d.oauth); }catch(err){ const x = $("#au-err"); if(x) x.textContent = t("auth_fail"); } }
+  else if(d.atab){ S.adminTab = d.atab; render(); }
+  else if(d.set){
+    const note = ($("#note-"+d.id) || {}).value || "";
+    try{ await api.setOrder(d.id, d.set, note); toast("Pedido atualizado"); renderAdmin(); }catch(err){ toast("Erro: " + (err.message || err)); }
+  }
+  else if(d.receipt){
+    try{ const url = await api.receiptUrl(d.receipt); if(url) window.open(url, "_blank", "noopener"); else toast("Comprovativo indisponível no modo demonstração"); }
+    catch(err){ toast("Erro: " + (err.message || err)); }
+  }
+  else if(d.saveprod){
+    const id = d.saveprod;
+    try{ await api.saveProduct({ id, price:Number($("#pr-"+id).value), active:$("#ac-"+id).checked }); S.products = await api.products(); toast("Guardado"); }
+    catch(err){ toast("Erro: " + (err.message || err)); }
+  }
+});
+document.addEventListener("change", e => {
+  if(e.target.id === "langSel"){ S.lang = e.target.value; store.set("lang", S.lang); render(); }
+});
+document.addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target;
+  if(f.id === "authForm"){
+    const mode = (e.submitter && e.submitter.dataset.mode) || "in";
+    const email = $("#au-email").value.trim(), pw = $("#au-pass").value, err = $("#au-err");
+    err.textContent = "";
+    if(pw.length < 8){ err.textContent = t("pass_short"); return; }
+    try{
+      let res;
+      if(mode === "up"){
+        const r = await api.signUp(email, pw);
+        if(r.needsConfirm){ err.className = "okmsg"; err.textContent = t("check_mail"); return; }
+        res = await api.init();
+      } else res = await api.signIn(email, pw);
+      await afterLogin(res);
+    }catch(ex){ err.className = "err"; err.textContent = t("auth_fail"); }
+  }
+  else if(f.id === "coForm"){
+    const err = $("#co-err"), btn = $("#coBtn"); err.textContent = "";
+    const file = $("#co-file").files[0];
+    if(!file){ err.textContent = t("need_receipt"); return; }
+    if(!ALLOWED.includes(file.type) || file.size > 5*1024*1024){ err.textContent = t("bad_file"); return; }
+    btn.disabled = true; btn.textContent = t("sending");
+    try{
+      await api.createOrder({ product_id:f.dataset.pid, method:coState.method, phone:$("#co-phone").value.trim().slice(0,20),
+        player_id: $("#co-pid") ? $("#co-pid").value.trim().slice(0,24) : null, file });
+      closeDlg(); toast(t("sent")); S.view = "orders"; render(); window.scrollTo(0,0);
+    }catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("auth_fail"); btn.disabled = false; btn.textContent = t("send"); }
+  }
+  else if(f.id === "newProd"){
+    const name = $("#np-name").value.trim();
+    const slug = name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || ("p-"+Date.now());
+    try{
+      await api.saveProduct({ slug, name, category:$("#np-cat").value, price:Number($("#np-price").value), needs_player_id:$("#np-pid").checked, active:true, sort:200 });
+      S.products = await api.products(); toast("Produto adicionado"); renderAdmin();
+    }catch(ex){ toast("Erro: " + (ex.message || ex)); }
+  }
+});
+
+async function afterLogin(res){
+  if(!res) return;
+  S.user = res.user; S.profile = res.profile;
+  try{ S.products = await api.products(); }catch(_){}
+  closeDlg(); renderNav();
+  const pend = S.pending; S.pending = null;
+  await render();
+  if(pend){ const p = S.products.find(x => String(x.id) === String(pend)); if(p){ coState.method = "mpesa"; checkoutModal(p); } }
+}
+
+/* ---------- Arranque ---------- */
+(async function boot(){
+  const saved = store.get("lang", null);
+  const nav = (navigator.language || "pt").slice(0,2);
+  S.lang = LANGS[saved] ? saved : (LANGS[nav] ? nav : "pt");
+  try{ S.products = await api.products(); }catch(e){ S.products = SEED; }
+  try{
+    const res = await api.init();
+    if(res){ S.user = res.user; S.profile = res.profile; S.products = await api.products().catch(()=>S.products); }
+    if(!DEMO) sb.auth.onAuthStateChange(async (ev) => { if(ev === "SIGNED_IN" && !S.user){ const r = await api.init(); if(r) await afterLogin(r); } });
+  }catch(e){}
+  render();
+})();
+</script>
+</body>
+</html>
