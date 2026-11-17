@@ -6,6 +6,13 @@
 <title>R DIGITAL</title>
 <meta name="description" content="R DIGITAL — streaming, IA e ferramentas criativas com ativação rápida. Pague por M-Pesa, e-Mola ou BIM.">
 <meta name="theme-color" content="#070B1A">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="R DIGITAL">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
@@ -156,6 +163,17 @@ td textarea{min-height:60px;min-width:180px}
 .fab{position:fixed;inset-inline-end:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;
   width:54px;height:54px;border-radius:50%;background:#1FA855;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.4);border:0;cursor:pointer;text-decoration:none}
 .fab svg{width:28px;height:28px;color:#fff}
+.nbadge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--bad);color:#fff;font-size:12px;font-weight:700;margin-inline-start:6px;line-height:1}
+.chat{display:grid;gap:8px;max-height:46dvh;overflow-y:auto;padding:4px 2px;align-content:start}
+.bub{max-width:84%;padding:8px 12px;border-radius:14px;overflow-wrap:anywhere;white-space:pre-wrap;font-size:14.5px}
+.bub small{display:block;opacity:.65;font-size:11px;margin-top:3px}
+.bub.me{justify-self:end;background:var(--accent);color:var(--accent-fg);border-end-end-radius:4px}
+.bub.them{justify-self:start;background:var(--surface-2);border-end-start-radius:4px}
+.chatform{display:flex;gap:8px;align-items:flex-end}
+.chatform textarea{min-height:44px;max-height:110px;resize:none;flex:1;min-width:0}
+.conv{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.conv>div:first-child{min-width:0;flex:1 1 220px}
+.notifbox{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--surface-2);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:14px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 @media (max-width:420px){.methods{grid-template-columns:1fr}}
 </style>
@@ -234,7 +252,8 @@ pt:{
   need_receipt:"Anexe o comprovativo de pagamento.", bad_file:"Ficheiro inválido. Use imagem (JPG, PNG, WEBP) ou PDF até 5 MB.",
   no_orders:"Ainda não tem pedidos.", st_pending:"A aguardar confirmação", st_paid:"Pago, a preparar", st_delivered:"Entregue", st_rejected:"Rejeitado",
   access:"Acesso", back:"Voltar", close:"Fechar", demo:"Modo demonstração: nada sai do seu navegador. Use admin@demo para ver o painel.",
-  sess_need:"Entre na sua conta para comprar.", soon:"Em breve"
+  sess_need:"Entre na sua conta para comprar.", soon:"Em breve",
+  messages:"Mensagens", chat_t:"Conversa", type_msg:"Escreva a sua mensagem...", send_msg:"Enviar", no_msgs:"Ainda sem mensagens. Escreva a primeira.", new_msg:"Nova mensagem da R DIGITAL", order_upd:"Pedido atualizado", install:"Instalar aplicativo", install_ios:"iPhone: toque em Partilhar e depois em Adicionar ao ecrã principal.", msg_fail:"Não foi possível enviar a mensagem."
 },
 en:{
   login:"Sign in", logout:"Sign out", orders:"My orders", admin:"Dashboard", shop:"Shop",
@@ -265,7 +284,8 @@ en:{
   need_receipt:"Attach the payment receipt.", bad_file:"Invalid file. Use an image (JPG, PNG, WEBP) or a PDF up to 5 MB.",
   no_orders:"You have no orders yet.", st_pending:"Awaiting confirmation", st_paid:"Paid, preparing", st_delivered:"Delivered", st_rejected:"Rejected",
   access:"Access", back:"Back", close:"Close", demo:"Demo mode: nothing leaves your browser. Use admin@demo to see the dashboard.",
-  sess_need:"Sign in to your account to buy.", soon:"Coming soon"
+  sess_need:"Sign in to your account to buy.", soon:"Coming soon",
+  messages:"Messages", chat_t:"Chat", type_msg:"Type your message...", send_msg:"Send", no_msgs:"No messages yet. Write the first one.", new_msg:"New message from R DIGITAL", order_upd:"Order updated", install:"Install app", install_ios:"iPhone: tap Share, then Add to Home Screen.", msg_fail:"Could not send the message."
 },
 ar:{
   login:"تسجيل الدخول", logout:"خروج", orders:"طلباتي", admin:"لوحة التحكم", shop:"المتجر",
@@ -296,7 +316,8 @@ ar:{
   need_receipt:"أرفق إيصال الدفع.", bad_file:"ملف غير صالح. استخدم صورة أو PDF حتى 5 ميغابايت.",
   no_orders:"لا توجد طلبات بعد.", st_pending:"بانتظار التأكيد", st_paid:"مدفوع، قيد التجهيز", st_delivered:"تم التسليم", st_rejected:"مرفوض",
   access:"الوصول", back:"رجوع", close:"إغلاق", demo:"وضع تجريبي: لا يغادر شيء متصفحك.",
-  sess_need:"سجّل الدخول للشراء.", soon:"قريباً"
+  sess_need:"سجّل الدخول للشراء.", soon:"قريباً",
+  messages:"الرسائل", chat_t:"محادثة", type_msg:"اكتب رسالتك...", send_msg:"إرسال", no_msgs:"لا توجد رسائل بعد. اكتب أول رسالة.", new_msg:"رسالة جديدة من R DIGITAL", order_upd:"تم تحديث الطلب", install:"تثبيت التطبيق", install_ios:"آيفون: اضغط مشاركة ثم إضافة إلى الشاشة الرئيسية.", msg_fail:"تعذر إرسال الرسالة."
 },
 fr:{
   login:"Connexion", logout:"Quitter", orders:"Mes commandes", admin:"Tableau de bord", shop:"Boutique",
@@ -327,7 +348,8 @@ fr:{
   need_receipt:"Joignez le reçu de paiement.", bad_file:"Fichier invalide. Image (JPG, PNG, WEBP) ou PDF, 5 Mo maximum.",
   no_orders:"Aucune commande pour le moment.", st_pending:"En attente de confirmation", st_paid:"Payé, en préparation", st_delivered:"Livré", st_rejected:"Rejeté",
   access:"Accès", back:"Retour", close:"Fermer", demo:"Mode démo : rien ne quitte votre navigateur.",
-  sess_need:"Connectez-vous pour acheter.", soon:"Bientôt"
+  sess_need:"Connectez-vous pour acheter.", soon:"Bientôt",
+  messages:"Messages", chat_t:"Discussion", type_msg:"Écrivez votre message...", send_msg:"Envoyer", no_msgs:"Pas encore de messages. Écrivez le premier.", new_msg:"Nouveau message de R DIGITAL", order_upd:"Commande mise à jour", install:"Installer l'application", install_ios:"iPhone : touchez Partager, puis Sur l'écran d'accueil.", msg_fail:"Impossible d'envoyer le message."
 },
 es:{
   login:"Entrar", logout:"Salir", orders:"Mis pedidos", admin:"Panel", shop:"Tienda",
@@ -358,7 +380,8 @@ es:{
   need_receipt:"Adjunta el comprobante de pago.", bad_file:"Archivo no válido. Imagen (JPG, PNG, WEBP) o PDF hasta 5 MB.",
   no_orders:"Aún no tienes pedidos.", st_pending:"Pendiente de confirmación", st_paid:"Pagado, preparando", st_delivered:"Entregado", st_rejected:"Rechazado",
   access:"Acceso", back:"Volver", close:"Cerrar", demo:"Modo demo: nada sale de tu navegador.",
-  sess_need:"Entra en tu cuenta para comprar.", soon:"Próximamente"
+  sess_need:"Entra en tu cuenta para comprar.", soon:"Próximamente",
+  messages:"Mensajes", chat_t:"Chat", type_msg:"Escribe tu mensaje...", send_msg:"Enviar", no_msgs:"Aún no hay mensajes. Escribe el primero.", new_msg:"Nuevo mensaje de R DIGITAL", order_upd:"Pedido actualizado", install:"Instalar aplicación", install_ios:"iPhone: toca Compartir y luego Añadir a pantalla de inicio.", msg_fail:"No se pudo enviar el mensaje."
 }};
 const TAG = {
  "chatgpt-plus":{pt:"IA mais poderosa para o seu dia a dia",en:"The most powerful AI for your daily life",ar:"أقوى ذكاء اصطناعي ليومك",fr:"L'IA la plus puissante au quotidien",es:"La IA más potente para tu día a día"},
@@ -400,7 +423,7 @@ const fmtDate = d => new Date(d).toLocaleString("pt-PT",{dateStyle:"short",timeS
 const CATS = ["ai","video","music","create","games"];
 const ALLOWED = ["image/jpeg","image/png","image/webp","application/pdf"];
 
-const S = { lang:"pt", products:[], user:null, profile:null, view:"shop", cat:"all", pending:null, orders:[], adminTab:"orders" };
+const S = { lang:"pt", products:[], user:null, profile:null, view:"shop", cat:"all", pending:null, orders:[], adminTab:"orders", unread:0, unreadMap:{}, pendingCount:0, chatOrder:null, chatMsgs:[] };
 const t = k => (T[S.lang] && T[S.lang][k]) ?? T.en[k] ?? T.pt[k] ?? k;
 const tag = slug => (TAG[slug] && (TAG[slug][S.lang] || TAG[slug].en)) || "";
 const policy = k => POLICY[k][S.lang] || POLICY[k].en;
@@ -442,7 +465,18 @@ const api = DEMO ? {
   async adminOrders(){ return store.get("orders", []).sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
   async setOrder(id, status, note){ const l = store.get("orders", []); const o = l.find(x=>x.id===id); o.status=status; o.delivery_note=note||null; store.set("orders", l); },
   async adminUsers(){ const u = store.get("user", null); return u ? [{ id:u.id, email:u.email, provider:"demo", created_at:new Date().toISOString(), last_sign_in_at:new Date().toISOString(), orders_count:store.get("orders",[]).length }] : []; },
-  async receiptUrl(){ return null; }
+  async receiptUrl(){ return null; },
+  async messages(orderId){ return store.get("msgs", []).filter(m=>m.order_id===orderId).sort((a,b)=>a.created_at.localeCompare(b.created_at)); },
+  async sendMessage(orderId, body){ const l = store.get("msgs", []); l.push({ id:"m"+Date.now()+Math.random().toString(36).slice(2,6), order_id:orderId, sender_id:S.user.id, from_admin:!!(S.profile&&S.profile.is_admin), body, read:false, created_at:new Date().toISOString() }); store.set("msgs", l); },
+  async markRead(orderId){ const adm = !!(S.profile&&S.profile.is_admin); const l = store.get("msgs", []); l.forEach(m=>{ if(m.order_id===orderId && m.from_admin!==adm) m.read=true; }); store.set("msgs", l); },
+  async unreadSummary(){ const adm = !!(S.profile&&S.profile.is_admin); const orders = store.get("orders", []); const mine = adm ? orders : orders.filter(o=>o.user_id===S.user.id); const ids = new Set(mine.map(o=>o.id)); const c = {};
+    store.get("msgs", []).forEach(m=>{ if(ids.has(m.order_id) && !m.read && m.from_admin!==adm) c[m.order_id]=(c[m.order_id]||0)+1; }); return c; },
+  async pendingCount(){ return store.get("orders", []).filter(o=>o.status==="pending").length; },
+  async conversations(){ const orders = store.get("orders", []); const map = new Map();
+    store.get("msgs", []).sort((a,b)=>b.created_at.localeCompare(a.created_at)).forEach(m=>{ let g = map.get(m.order_id); const o = orders.find(x=>x.id===m.order_id);
+      if(!g){ g = { order_id:m.order_id, product:o&&o.product_name, email:o&&o.profiles&&o.profiles.email, last:m.body, last_at:m.created_at, unread:0 }; map.set(m.order_id,g); }
+      if(!m.from_admin && !m.read) g.unread++; }); return [...map.values()]; },
+  subscribe(){}, unsubscribe(){}
 } : {
   async init(){
     sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true } });
@@ -455,7 +489,7 @@ const api = DEMO ? {
   async signIn(email, pw){ const { error } = await sb.auth.signInWithPassword({ email, password:pw }); if(error) throw error; return this.init(); },
   async signUp(email, pw){ const { data, error } = await sb.auth.signUp({ email, password:pw, options:{ emailRedirectTo: location.origin } }); if(error) throw error; return { needsConfirm: !data.session }; },
   async oauth(provider){ const { error } = await sb.auth.signInWithOAuth({ provider, options:{ redirectTo: location.origin } }); if(error) throw error; },
-  async signOut(){ await sb.auth.signOut(); },
+  async signOut(){ this.unsubscribe(); await sb.auth.signOut(); },
   async products(){ const { data, error } = await sb.from("products").select("*").order("sort"); if(error) throw error; return data; },
   async saveProduct(p){ if(p.id){ const { id, ...rest } = p; const { error } = await sb.from("products").update(rest).eq("id", id); if(error) throw error; }
     else { const { error } = await sb.from("products").insert(p); if(error) throw error; } },
@@ -474,24 +508,47 @@ const api = DEMO ? {
   async adminOrders(){ const { data, error } = await sb.from("orders").select("*, profiles(email,full_name)").order("created_at",{ascending:false}).limit(300); if(error) throw error; return data; },
   async setOrder(id, status, note){ const { error } = await sb.from("orders").update({ status, delivery_note: note || null }).eq("id", id); if(error) throw error; },
   async adminUsers(){ const { data, error } = await sb.rpc("admin_list_users"); if(error) throw error; return data; },
-  async receiptUrl(path){ const { data, error } = await sb.storage.from("receipts").createSignedUrl(path, 300); if(error) throw error; return data.signedUrl; }
+  async receiptUrl(path){ const { data, error } = await sb.storage.from("receipts").createSignedUrl(path, 300); if(error) throw error; return data.signedUrl; },
+  async messages(orderId){ const { data, error } = await sb.from("messages").select("*").eq("order_id", orderId).order("created_at"); if(error) throw error; return data; },
+  async sendMessage(orderId, body){ const { error } = await sb.from("messages").insert({ order_id:orderId, body }); if(error) throw error; },
+  async markRead(orderId){ await sb.rpc("mark_messages_read", { p_order:orderId }); },
+  async unreadSummary(){ const adm = !!(S.profile&&S.profile.is_admin); const { data, error } = await sb.from("messages").select("order_id,from_admin").eq("read", false); if(error) throw error;
+    const c = {}; data.forEach(m=>{ if(m.from_admin!==adm) c[m.order_id]=(c[m.order_id]||0)+1; }); return c; },
+  async pendingCount(){ const { count, error } = await sb.from("orders").select("id",{count:"exact",head:true}).eq("status","pending"); if(error) throw error; return count||0; },
+  async conversations(){ const { data, error } = await sb.from("messages").select("order_id,body,from_admin,read,created_at,orders(product_name,profiles(email))").order("created_at",{ascending:false}).limit(500); if(error) throw error;
+    const map = new Map(); data.forEach(m=>{ let g = map.get(m.order_id);
+      if(!g){ g = { order_id:m.order_id, product:m.orders&&m.orders.product_name, email:m.orders&&m.orders.profiles&&m.orders.profiles.email, last:m.body, last_at:m.created_at, unread:0 }; map.set(m.order_id,g); }
+      if(!m.from_admin && !m.read) g.unread++; }); return [...map.values()]; },
+  subscribe(h){ this.unsubscribe();
+    this._ch = sb.channel("rd-live")
+      .on("postgres_changes", { event:"INSERT", schema:"public", table:"orders" }, p => h.orderInsert(p.new))
+      .on("postgres_changes", { event:"UPDATE", schema:"public", table:"orders" }, p => h.orderUpdate(p.new))
+      .on("postgres_changes", { event:"INSERT", schema:"public", table:"messages" }, p => h.msgInsert(p.new))
+      .subscribe(); },
+  unsubscribe(){ if(this._ch){ try{ sb.removeChannel(this._ch); }catch(e){} this._ch = null; } }
 };
 
 /* ======================================================================
    INTERFACE
    ====================================================================== */
-function openDlg(html){ const d = $("#dlg"); d.innerHTML = html; if(!d.open) d.showModal(); }
+function openDlg(html){ const d = $("#dlg"); S.chatOrder = null; d.innerHTML = html; if(!d.open) d.showModal(); }
 function closeDlg(){ const d = $("#dlg"); if(d.open) d.close(); }
 $("#dlg").addEventListener("click", e => { if(e.target.id === "dlg") closeDlg(); });
+$("#dlg").addEventListener("close", () => { S.chatOrder = null; });
 
 function renderNav(){
   const langOpts = Object.entries(LANGS).map(([k,v]) => `<option value="${k}" ${k===S.lang?"selected":""}>${esc(v)}</option>`).join("");
   let h = `<select class="lang" id="langSel" aria-label="Language">${langOpts}</select>`;
   if(S.user){
-    h += `<button class="btn" data-go="orders">${esc(t("orders"))}</button>`;
-    if(S.profile && S.profile.is_admin) h += `<button class="btn" data-go="admin">${esc(t("admin"))}</button>`;
+    const adm = !!(S.profile && S.profile.is_admin);
+    if(deferredInstall) h += `<button class="btn" id="installBtn">${esc(t("install"))}</button>`;
+    const bo = (!adm && S.unread) ? `<span class="nbadge">${S.unread}</span>` : "";
+    h += `<button class="btn" data-go="orders">${esc(t("orders"))}${bo}</button>`;
+    const ba = adm && (S.unread + S.pendingCount) ? `<span class="nbadge">${S.unread + S.pendingCount}</span>` : "";
+    if(adm) h += `<button class="btn" data-go="admin">${esc(t("admin"))}${ba}</button>`;
     h += `<button class="btn" id="outBtn">${esc(t("logout"))}</button>`;
   } else {
+    if(deferredInstall) h += `<button class="btn" id="installBtn">${esc(t("install"))}</button>`;
     h += `<button class="btn primary" id="inBtn">${esc(t("login"))}</button>`;
   }
   $("#nav").innerHTML = h;
@@ -551,6 +608,7 @@ function renderOrders(){
       <div class="top"><strong>${esc(o.product_name)}</strong><span class="badge st-${esc(o.status)}">${esc(t("st_"+o.status))}</span></div>
       <div class="muted">${esc(fmtDate(o.created_at))} · ${esc(fmt(o.amount))} · ${esc((CONFIG.PAYMENTS[o.method]||{}).label || o.method)}</div>
       ${o.delivery_note ? `<div><div class="muted" style="margin-bottom:4px">${esc(t("access"))}</div><div class="delivery">${esc(o.delivery_note)}</div></div>` : ""}
+      <div><button class="btn sm" data-chat="${esc(o.id)}" data-ctitle="${esc(o.product_name)}">${esc(t("messages"))}${S.unreadMap[o.id] ? `<span class="nbadge">${S.unreadMap[o.id]}</span>` : ""}</button></div>
     </div>`).join("");
   return `<section><div class="sec-head"><h2>${esc(t("orders"))}</h2><button class="btn" data-go="shop">${esc(t("back"))}</button></div>
     <div class="olist">${rows || `<p class="muted">${esc(t("no_orders"))}</p>`}</div></section>`;
@@ -559,13 +617,19 @@ function renderOrders(){
 /* ---------- Painel do administrador (português) ---------- */
 const ST_PT = { pending:"Pendente", paid:"Pago", delivered:"Entregue", rejected:"Rejeitado" };
 async function renderAdmin(){
-  const tabs = [["orders","Pedidos"],["clients","Clientes"],["products","Produtos"]]
-    .map(([k,v]) => `<button data-atab="${k}" aria-pressed="${S.adminTab===k}">${v}</button>`).join("");
+  const tabs = [["orders","Pedidos"],["comms","Comunicações"],["clients","Clientes"],["products","Produtos"]]
+    .map(([k,v]) => `<button data-atab="${k}" aria-pressed="${S.adminTab===k}">${v}${k==="comms" && S.unread ? `<span class="nbadge">${S.unread}</span>` : ""}</button>`).join("");
+  let nbox = "";
+  if(!("Notification" in window)) nbox = "";
+  else if(Notification.permission === "default") nbox = `<div class="notifbox"><span>Receba aviso de novos pedidos e mensagens neste aparelho.</span><button class="btn sm primary" id="notifBtn">Ativar notificações</button></div>`;
+  else if(Notification.permission === "granted") nbox = `<div class="notifbox"><span>Notificações ativas neste aparelho. Mantenha o aplicativo aberto ou em segundo plano.</span></div>`;
+  else nbox = `<div class="notifbox"><span>As notificações estão bloqueadas. Ative-as nas definições do navegador para este site.</span></div>`;
   let body = `<p class="muted">A carregar...</p>`;
   $("#app").innerHTML = `<section><div class="sec-head"><h2>Painel de administrador</h2><button class="btn" data-go="shop">Ver loja</button></div>
-    <div class="tabs" style="margin-bottom:14px">${tabs}</div><div id="adminBody">${body}</div></section>`;
+    ${nbox}<div class="tabs" style="margin-bottom:14px">${tabs}</div><div id="adminBody">${body}</div></section>`;
   try{
     if(S.adminTab === "orders") body = await adminOrdersHtml();
+    else if(S.adminTab === "comms") body = await adminCommsHtml();
     else if(S.adminTab === "clients") body = await adminClientsHtml();
     else body = adminProductsHtml();
   }catch(e){ body = `<p class="err">Erro ao carregar: ${esc(e.message || e)}</p>`; }
@@ -591,9 +655,19 @@ async function adminOrdersHtml(){
         <button class="btn sm" data-set="paid" data-id="${esc(o.id)}">Pago</button>
         <button class="btn sm primary" data-set="delivered" data-id="${esc(o.id)}">Entregar</button>
         <button class="btn sm" data-set="rejected" data-id="${esc(o.id)}">Rejeitar</button>
+        <button class="btn sm" data-chat="${esc(o.id)}" data-ctitle="${esc(((o.profiles && o.profiles.email) || "") + " · " + o.product_name)}">Chat</button>
       </div></td></tr>`).join("");
   return stats + `<div class="tbl"><table><thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Prova</th><th>Estado</th><th>Ação</th></tr></thead>
     <tbody>${rows || '<tr><td colspan="6" class="muted">Sem pedidos.</td></tr>'}</tbody></table></div>`;
+}
+async function adminCommsHtml(){
+  const list = await api.conversations();
+  const rows = list.map(c => `<div class="conv"><div><strong>${esc(c.email || "cliente")}</strong> · ${esc(c.product || "")}
+      <div class="muted" style="overflow-wrap:anywhere">${esc(String(c.last || "").slice(0,90))}</div>
+      <div class="muted" style="font-size:12px">${esc(fmtDate(c.last_at))}</div></div>
+    <div style="display:flex;align-items:center;gap:8px">${c.unread ? `<span class="nbadge">${c.unread}</span>` : ""}
+      <button class="btn sm primary" data-chat="${esc(c.order_id)}" data-ctitle="${esc((c.email || "") + " · " + (c.product || ""))}">Abrir</button></div></div>`).join("");
+  return `<div class="olist">${rows || '<p class="muted">Ainda não há conversas. Os clientes escrevem a partir de "Meus pedidos".</p>'}</div>`;
 }
 async function adminClientsHtml(){
   const list = await api.adminUsers();
@@ -680,6 +754,7 @@ function policyModal(k){
 function renderFooter(){
   return `<footer><div><strong style="color:var(--fg)">R DIGITAL</strong> · Streaming &amp; Mais</div>
     <div>${esc(t("support"))} WhatsApp: <b style="color:var(--fg)">${esc(CONFIG.WHATSAPP_SHOW)}</b> · ${esc(t("call"))}: <b style="color:var(--fg)">${esc(CONFIG.PHONE_SHOW)}</b></div>
+    ${(IS_IOS && !IS_STANDALONE) ? `<div>${esc(t("install_ios"))}</div>` : ""}
     <div class="links"><button class="link" data-policy="terms">${esc(t("terms"))}</button><button class="link" data-policy="privacy">${esc(t("privacy"))}</button><button class="link" data-policy="refund">${esc(t("refund"))}</button></div></footer>`;
 }
 
@@ -691,6 +766,7 @@ async function render(){
   if(S.view === "admin" && S.profile && S.profile.is_admin){ await renderAdmin(); $("#app").insertAdjacentHTML("beforeend", renderFooter()); return; }
   if(S.view === "orders" && S.user){
     try{ S.orders = await api.myOrders(); }catch(e){ S.orders = []; }
+    try{ S.unreadMap = await api.unreadSummary(); }catch(e){}
     $("#app").innerHTML = renderOrders() + renderFooter(); return;
   }
   S.view = "shop";
@@ -704,7 +780,10 @@ document.addEventListener("click", async e => {
   const d = el.dataset;
   if(el.id === "brand"){ S.view = "shop"; render(); window.scrollTo(0,0); }
   else if(el.id === "inBtn"){ S.pending = null; authModal(); }
-  else if(el.id === "outBtn"){ try{ await api.signOut(); }catch(_){} S.user = null; S.profile = null; S.view = "shop"; render(); }
+  else if(el.id === "outBtn"){ try{ await api.signOut(); }catch(_){} S.user = null; S.profile = null; S.view = "shop"; S.unread = 0; S.unreadMap = {}; S.pendingCount = 0; setBadge(0); render(); }
+  else if(el.id === "installBtn"){ if(deferredInstall){ deferredInstall.prompt(); deferredInstall = null; renderNav(); } }
+  else if(el.id === "notifBtn"){ try{ await Notification.requestPermission(); }catch(_){} renderAdmin(); }
+  else if(d.chat){ openChat(d.chat, d.ctitle || t("chat_t")); }
   else if(d.go){ S.view = d.go; render(); window.scrollTo(0,0); }
   else if(d.cat){ S.cat = d.cat; render(); }
   else if(d.close !== undefined){ closeDlg(); }
@@ -735,6 +814,9 @@ document.addEventListener("click", async e => {
     try{ await api.saveProduct({ id, price:Number($("#pr-"+id).value), active:$("#ac-"+id).checked }); S.products = await api.products(); toast("Guardado"); }
     catch(err){ toast("Erro: " + (err.message || err)); }
   }
+});
+document.addEventListener("keydown", e => {
+  if(e.target.id === "chatIn" && e.key === "Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); const f = $("#chatForm"); if(f) f.requestSubmit(); }
 });
 document.addEventListener("change", e => {
   if(e.target.id === "langSel"){ S.lang = e.target.value; store.set("lang", S.lang); render(); }
@@ -769,6 +851,16 @@ document.addEventListener("submit", async e => {
       closeDlg(); toast(t("sent")); S.view = "orders"; render(); window.scrollTo(0,0);
     }catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("auth_fail"); btn.disabled = false; btn.textContent = t("send"); }
   }
+  else if(f.id === "chatForm"){
+    const inp = $("#chatIn"), err = $("#chat-err"), body = inp.value.trim(); err.textContent = "";
+    if(!body || !S.chatOrder) return;
+    const btn = f.querySelector("button[type=submit]"); btn.disabled = true;
+    try{
+      await api.sendMessage(S.chatOrder, body); inp.value = "";
+      S.chatMsgs = await api.messages(S.chatOrder); paintChat();
+    }catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("msg_fail"); }
+    btn.disabled = false; inp.focus();
+  }
   else if(f.id === "newProd"){
     const name = $("#np-name").value.trim();
     const slug = name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || ("p-"+Date.now());
@@ -779,11 +871,101 @@ document.addEventListener("submit", async e => {
   }
 });
 
+/* ---------- Chat ---------- */
+async function openChat(orderId, title){
+  openDlg(`<div class="m-head"><h3>${esc(title)}</h3><button class="x" data-close aria-label="${esc(t("close"))}">×</button></div>
+  <div class="m-body"><div class="chat" id="chatBox" aria-live="polite"></div>
+    <form class="chatform" id="chatForm"><textarea id="chatIn" maxlength="1000" rows="1" placeholder="${esc(t("type_msg"))}" aria-label="${esc(t("type_msg"))}"></textarea>
+      <button class="btn primary" type="submit">${esc(t("send_msg"))}</button></form>
+    <p class="err" id="chat-err" role="alert"></p></div>`);
+  S.chatOrder = orderId;
+  try{ S.chatMsgs = await api.messages(orderId); }catch(e){ S.chatMsgs = []; }
+  paintChat();
+  try{ await api.markRead(orderId); }catch(e){}
+  refreshUnread();
+}
+function paintChat(){
+  const box = $("#chatBox"); if(!box) return;
+  const adm = !!(S.profile && S.profile.is_admin);
+  box.innerHTML = S.chatMsgs.length
+    ? S.chatMsgs.map(m => `<div class="bub ${m.from_admin === adm ? "me" : "them"}">${esc(m.body)}<small>${esc(fmtDate(m.created_at))}</small></div>`).join("")
+    : `<p class="muted">${esc(t("no_msgs"))}</p>`;
+  box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- Avisos em tempo real ---------- */
+let audioCtx = null;
+function beep(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), n = audioCtx.currentTime;
+    o.type = "sine"; o.frequency.value = 880;
+    g.gain.setValueAtTime(.0001, n); g.gain.exponentialRampToValueAtTime(.25, n+.02); g.gain.exponentialRampToValueAtTime(.0001, n+.35);
+    o.connect(g); g.connect(audioCtx.destination); o.start(n); o.stop(n+.4);
+  }catch(e){}
+}
+async function notify(title, body){
+  toast(body ? title + " · " + body : title); beep();
+  try{
+    if(document.hidden && "Notification" in window && Notification.permission === "granted"){
+      const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+      const opt = { body, icon:"icon-192.png", badge:"icon-192.png", tag:"rd-"+Date.now() };
+      if(reg) reg.showNotification(title, opt); else new Notification(title, opt);
+    }
+  }catch(e){}
+}
+function setBadge(n){ try{ if(navigator.setAppBadge){ if(n > 0) navigator.setAppBadge(n); else navigator.clearAppBadge(); } }catch(e){} }
+async function refreshUnread(redraw = true){
+  if(!S.user) return;
+  try{ S.unreadMap = await api.unreadSummary(); S.unread = Object.values(S.unreadMap).reduce((a,b)=>a+b, 0); }catch(e){}
+  if(S.profile && S.profile.is_admin){ try{ S.pendingCount = await api.pendingCount(); }catch(e){} } else S.pendingCount = 0;
+  setBadge(S.unread + S.pendingCount);
+  if(redraw) renderNav();
+}
+const live = {
+  async orderInsert(o){
+    if(!(S.profile && S.profile.is_admin)) return;
+    notify("Novo pedido", `${o.product_name} · ${fmt(o.amount)}`);
+    await refreshUnread();
+    if(S.view === "admin") renderAdmin();
+  },
+  async orderUpdate(o){
+    if(!S.user || (S.profile && S.profile.is_admin) || o.user_id !== S.user.id) return;
+    notify(t("order_upd"), `${o.product_name} · ${t("st_" + o.status)}`);
+    if(S.view === "orders") render();
+  },
+  async msgInsert(m){
+    const adm = !!(S.profile && S.profile.is_admin);
+    const mine = m.from_admin === adm;
+    if(S.chatOrder === m.order_id){
+      if(!S.chatMsgs.find(x => x.id === m.id)) S.chatMsgs.push(m);
+      paintChat();
+      if(!mine){ beep(); try{ await api.markRead(m.order_id); }catch(e){} }
+      return;
+    }
+    if(mine) return;
+    notify(adm ? "Nova mensagem de cliente" : t("new_msg"), String(m.body).slice(0, 80));
+    await refreshUnread();
+    if(S.view === "admin" && S.adminTab === "comms") renderAdmin();
+    if(S.view === "orders") render();
+  }
+};
+function startLive(){ if(!S.user) return; if(!DEMO) api.subscribe(live); refreshUnread(); }
+
+/* ---------- Aplicativo (PWA) ---------- */
+let deferredInstall = null;
+const IS_IOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const IS_STANDALONE = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; renderNav(); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; renderNav(); });
+document.addEventListener("visibilitychange", () => { if(!document.hidden) refreshUnread(); });
+if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(()=>{}); }); }
+
 async function afterLogin(res){
   if(!res) return;
   S.user = res.user; S.profile = res.profile;
   try{ S.products = await api.products(); }catch(_){}
-  closeDlg(); renderNav();
+  closeDlg(); renderNav(); startLive();
   const pend = S.pending; S.pending = null;
   await render();
   if(pend){ const p = S.products.find(x => String(x.id) === String(pend)); if(p){ coState.method = "mpesa"; checkoutModal(p); } }
@@ -797,7 +979,7 @@ async function afterLogin(res){
   try{ S.products = await api.products(); }catch(e){ S.products = SEED; }
   try{
     const res = await api.init();
-    if(res){ S.user = res.user; S.profile = res.profile; S.products = await api.products().catch(()=>S.products); }
+    if(res){ S.user = res.user; S.profile = res.profile; S.products = await api.products().catch(()=>S.products); startLive(); }
     if(!DEMO) sb.auth.onAuthStateChange(async (ev) => { if(ev === "SIGNED_IN" && !S.user){ const r = await api.init(); if(r) await afterLogin(r); } });
   }catch(e){}
   render();
