@@ -163,6 +163,10 @@ td textarea{min-height:60px;min-width:180px}
 .fab{position:fixed;inset-inline-end:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;
   width:54px;height:54px;border-radius:50%;background:#1FA855;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.4);border:0;cursor:pointer;text-decoration:none}
 .fab svg{width:28px;height:28px;color:#fff}
+.methods.two{grid-template-columns:repeat(2,1fr)}
+.mgroup{font-size:13px;color:var(--muted);font-weight:600;margin:0 0 6px}
+.warn{background:color-mix(in srgb,var(--warn) 16%,var(--bg));border:1px solid var(--warn);border-radius:10px;padding:8px 12px;font-size:13.5px}
+.usd{display:block;font-family:var(--font-body);font-size:12.5px;font-weight:500;color:var(--muted)}
 .nbadge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--bad);color:#fff;font-size:12px;font-weight:700;margin-inline-start:6px;line-height:1}
 .chat{display:grid;gap:8px;max-height:46dvh;overflow-y:auto;padding:4px 2px;align-content:start}
 .bub{max-width:84%;padding:8px 12px;border-radius:14px;overflow-wrap:anywhere;white-space:pre-wrap;font-size:14.5px}
@@ -175,7 +179,7 @@ td textarea{min-height:60px;min-width:180px}
 .conv>div:first-child{min-width:0;flex:1 1 220px}
 .notifbox{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--surface-2);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:14px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-@media (max-width:420px){.methods{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -213,8 +217,14 @@ const CONFIG = {
   PAYMENTS: {
     mpesa: { label: "M-Pesa", holder: "Ramos Alberto Ramos", number: "859269810" },
     emola: { label: "e-Mola", holder: "Ramos Alberto Ramos", number: "863023604" },
-    bim:   { label: "BIM / Millennium BIM", holder: "", number: "", nib: "" }
-  }
+    bim:   { label: "BIM / Millennium BIM", holder: "Ramos Alberto Ramos", number: "1025012678", nib: "000100000102501267857" },
+    paypal:  { label: "PayPal", email: "ramosterezinhaalberto@gmail.com" },
+    binance: { label: "Binance (USDT)", coin: "USDT", network: "BSC (BEP20)", address: "0xa5eb262ca1feae3da461a5e8f5ecb6e8c8ef37e7" },
+    wallet:  { label: "Carteira" }
+  },
+  NATIONAL: ["mpesa", "emola", "bim"],
+  INTERNATIONAL: ["paypal", "binance"],
+  USDT_RATE: 74   // quantos MT vale 1 USDT (e 1 USD). Altere aqui quando mudar.
 };
 const DEMO = !(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
 
@@ -253,7 +263,9 @@ pt:{
   no_orders:"Ainda não tem pedidos.", st_pending:"A aguardar confirmação", st_paid:"Pago, a preparar", st_delivered:"Entregue", st_rejected:"Rejeitado",
   access:"Acesso", back:"Voltar", close:"Fechar", demo:"Modo demonstração: nada sai do seu navegador. Use admin@demo para ver o painel.",
   sess_need:"Entre na sua conta para comprar.", soon:"Em breve",
-  messages:"Mensagens", chat_t:"Conversa", type_msg:"Escreva a sua mensagem...", send_msg:"Enviar", no_msgs:"Ainda sem mensagens. Escreva a primeira.", new_msg:"Nova mensagem da R DIGITAL", order_upd:"Pedido atualizado", install:"Instalar aplicativo", install_ios:"iPhone: toque em Partilhar e depois em Adicionar ao ecrã principal.", msg_fail:"Não foi possível enviar a mensagem."
+  messages:"Mensagens", chat_t:"Conversa", type_msg:"Escreva a sua mensagem...", send_msg:"Enviar", no_msgs:"Ainda sem mensagens. Escreva a primeira.", new_msg:"Nova mensagem da R DIGITAL", order_upd:"Pedido atualizado", install:"Instalar aplicativo", install_ios:"iPhone: toque em Partilhar e depois em Adicionar ao ecrã principal.", msg_fail:"Não foi possível enviar a mensagem.",
+  pay_nat:"Pagar em Moçambique", pay_intl:"Pagar internacionalmente", paypal_to:"Envie o pagamento por PayPal para", email_l:"Email PayPal", coin:"Moeda", network:"Rede", addr:"Endereço", net_warn:"Envie apenas USDT pela rede BSC (BEP20). Outra moeda ou rede faz perder o dinheiro.", usd_amt:"Valor em USD", usdt_amt:"Valor em USDT", approx:"aprox.",
+  wallet:"Carteira", balance:"Saldo", points:"Pontos", pts_rule:"Ganhe 1 ponto a cada 10 MT em pedidos entregues. 100 pontos valem 5 MT de saldo.", redeem:"Trocar pontos por saldo", deposit_t:"Depositar saldo", dep_amount:"Valor a depositar (MT)", dep_min:"O valor mínimo é 50 MT.", dep_send:"Enviar depósito", dep_sent:"Depósito enviado! Vamos confirmar o pagamento.", dep_ok:"Depósito confirmado", dep_no:"Depósito rejeitado", history:"Histórico", tx_deposit:"Depósito", tx_purchase:"Compra", tx_refund:"Reembolso", tx_points:"Pontos trocados", tx_adjustment:"Ajuste", wst_pending:"A aguardar", wst_confirmed:"Confirmado", wst_rejected:"Rejeitado", wallet_bal:"Saldo disponível", wallet_after:"Saldo depois da compra", wallet_low:"Saldo insuficiente. Deposite primeiro na sua Carteira.", wallet_use:"Pagar com saldo", wallet_note:"O saldo serve para comprar na R DIGITAL.", redeemed:"Pontos trocados em saldo.", pts_need:"Precisa de pelo menos 100 pontos.", go_deposit:"Depositar agora", no_tx:"Ainda sem movimentos."
 },
 en:{
   login:"Sign in", logout:"Sign out", orders:"My orders", admin:"Dashboard", shop:"Shop",
@@ -285,7 +297,9 @@ en:{
   no_orders:"You have no orders yet.", st_pending:"Awaiting confirmation", st_paid:"Paid, preparing", st_delivered:"Delivered", st_rejected:"Rejected",
   access:"Access", back:"Back", close:"Close", demo:"Demo mode: nothing leaves your browser. Use admin@demo to see the dashboard.",
   sess_need:"Sign in to your account to buy.", soon:"Coming soon",
-  messages:"Messages", chat_t:"Chat", type_msg:"Type your message...", send_msg:"Send", no_msgs:"No messages yet. Write the first one.", new_msg:"New message from R DIGITAL", order_upd:"Order updated", install:"Install app", install_ios:"iPhone: tap Share, then Add to Home Screen.", msg_fail:"Could not send the message."
+  messages:"Messages", chat_t:"Chat", type_msg:"Type your message...", send_msg:"Send", no_msgs:"No messages yet. Write the first one.", new_msg:"New message from R DIGITAL", order_upd:"Order updated", install:"Install app", install_ios:"iPhone: tap Share, then Add to Home Screen.", msg_fail:"Could not send the message.",
+  pay_nat:"Pay in Mozambique", pay_intl:"Pay internationally", paypal_to:"Send the payment by PayPal to", email_l:"PayPal email", coin:"Coin", network:"Network", addr:"Address", net_warn:"Send only USDT on the BSC (BEP20) network. Another coin or network means lost funds.", usd_amt:"Amount in USD", usdt_amt:"Amount in USDT", approx:"approx.",
+  wallet:"Wallet", balance:"Balance", points:"Points", pts_rule:"Earn 1 point for every 10 MT on delivered orders. 100 points are worth 5 MT of balance.", redeem:"Redeem points for balance", deposit_t:"Add balance", dep_amount:"Amount to deposit (MT)", dep_min:"The minimum is 50 MT.", dep_send:"Submit deposit", dep_sent:"Deposit sent! We will confirm the payment.", dep_ok:"Deposit confirmed", dep_no:"Deposit rejected", history:"History", tx_deposit:"Deposit", tx_purchase:"Purchase", tx_refund:"Refund", tx_points:"Points redeemed", tx_adjustment:"Adjustment", wst_pending:"Pending", wst_confirmed:"Confirmed", wst_rejected:"Rejected", wallet_bal:"Available balance", wallet_after:"Balance after purchase", wallet_low:"Not enough balance. Add funds to your Wallet first.", wallet_use:"Pay with balance", wallet_note:"Your balance can be used to buy on R DIGITAL.", redeemed:"Points redeemed for balance.", pts_need:"You need at least 100 points.", go_deposit:"Add funds now", no_tx:"No activity yet."
 },
 ar:{
   login:"تسجيل الدخول", logout:"خروج", orders:"طلباتي", admin:"لوحة التحكم", shop:"المتجر",
@@ -317,7 +331,9 @@ ar:{
   no_orders:"لا توجد طلبات بعد.", st_pending:"بانتظار التأكيد", st_paid:"مدفوع، قيد التجهيز", st_delivered:"تم التسليم", st_rejected:"مرفوض",
   access:"الوصول", back:"رجوع", close:"إغلاق", demo:"وضع تجريبي: لا يغادر شيء متصفحك.",
   sess_need:"سجّل الدخول للشراء.", soon:"قريباً",
-  messages:"الرسائل", chat_t:"محادثة", type_msg:"اكتب رسالتك...", send_msg:"إرسال", no_msgs:"لا توجد رسائل بعد. اكتب أول رسالة.", new_msg:"رسالة جديدة من R DIGITAL", order_upd:"تم تحديث الطلب", install:"تثبيت التطبيق", install_ios:"آيفون: اضغط مشاركة ثم إضافة إلى الشاشة الرئيسية.", msg_fail:"تعذر إرسال الرسالة."
+  messages:"الرسائل", chat_t:"محادثة", type_msg:"اكتب رسالتك...", send_msg:"إرسال", no_msgs:"لا توجد رسائل بعد. اكتب أول رسالة.", new_msg:"رسالة جديدة من R DIGITAL", order_upd:"تم تحديث الطلب", install:"تثبيت التطبيق", install_ios:"آيفون: اضغط مشاركة ثم إضافة إلى الشاشة الرئيسية.", msg_fail:"تعذر إرسال الرسالة.",
+  pay_nat:"الدفع داخل موزمبيق", pay_intl:"الدفع الدولي", paypal_to:"أرسل الدفعة عبر PayPal إلى", email_l:"بريد PayPal", coin:"العملة", network:"الشبكة", addr:"العنوان", net_warn:"أرسل USDT فقط عبر شبكة BSC (BEP20). عملة أو شبكة أخرى تعني ضياع الأموال.", usd_amt:"المبلغ بالدولار", usdt_amt:"المبلغ بـ USDT", approx:"تقريباً",
+  wallet:"المحفظة", balance:"الرصيد", points:"النقاط", pts_rule:"اربح نقطة واحدة لكل 10 MT في الطلبات المسلّمة. كل 100 نقطة تساوي 5 MT رصيداً.", redeem:"استبدال النقاط برصيد", deposit_t:"إيداع رصيد", dep_amount:"المبلغ المراد إيداعه (MT)", dep_min:"الحد الأدنى 50 MT.", dep_send:"إرسال الإيداع", dep_sent:"تم إرسال الإيداع! سنؤكد الدفع.", dep_ok:"تم تأكيد الإيداع", dep_no:"تم رفض الإيداع", history:"السجل", tx_deposit:"إيداع", tx_purchase:"شراء", tx_refund:"استرداد", tx_points:"استبدال نقاط", tx_adjustment:"تعديل", wst_pending:"قيد الانتظار", wst_confirmed:"مؤكد", wst_rejected:"مرفوض", wallet_bal:"الرصيد المتاح", wallet_after:"الرصيد بعد الشراء", wallet_low:"الرصيد غير كافٍ. أودع في محفظتك أولاً.", wallet_use:"الدفع بالرصيد", wallet_note:"يمكن استخدام الرصيد للشراء من R DIGITAL.", redeemed:"تم استبدال النقاط برصيد.", pts_need:"تحتاج 100 نقطة على الأقل.", go_deposit:"أودع الآن", no_tx:"لا توجد حركات بعد."
 },
 fr:{
   login:"Connexion", logout:"Quitter", orders:"Mes commandes", admin:"Tableau de bord", shop:"Boutique",
@@ -349,7 +365,9 @@ fr:{
   no_orders:"Aucune commande pour le moment.", st_pending:"En attente de confirmation", st_paid:"Payé, en préparation", st_delivered:"Livré", st_rejected:"Rejeté",
   access:"Accès", back:"Retour", close:"Fermer", demo:"Mode démo : rien ne quitte votre navigateur.",
   sess_need:"Connectez-vous pour acheter.", soon:"Bientôt",
-  messages:"Messages", chat_t:"Discussion", type_msg:"Écrivez votre message...", send_msg:"Envoyer", no_msgs:"Pas encore de messages. Écrivez le premier.", new_msg:"Nouveau message de R DIGITAL", order_upd:"Commande mise à jour", install:"Installer l'application", install_ios:"iPhone : touchez Partager, puis Sur l'écran d'accueil.", msg_fail:"Impossible d'envoyer le message."
+  messages:"Messages", chat_t:"Discussion", type_msg:"Écrivez votre message...", send_msg:"Envoyer", no_msgs:"Pas encore de messages. Écrivez le premier.", new_msg:"Nouveau message de R DIGITAL", order_upd:"Commande mise à jour", install:"Installer l'application", install_ios:"iPhone : touchez Partager, puis Sur l'écran d'accueil.", msg_fail:"Impossible d'envoyer le message.",
+  pay_nat:"Payer au Mozambique", pay_intl:"Payer à l'international", paypal_to:"Envoyez le paiement par PayPal à", email_l:"Email PayPal", coin:"Monnaie", network:"Réseau", addr:"Adresse", net_warn:"Envoyez uniquement des USDT sur le réseau BSC (BEP20). Une autre monnaie ou un autre réseau fait perdre les fonds.", usd_amt:"Montant en USD", usdt_amt:"Montant en USDT", approx:"env.",
+  wallet:"Portefeuille", balance:"Solde", points:"Points", pts_rule:"Gagnez 1 point par tranche de 10 MT sur les commandes livrées. 100 points valent 5 MT de solde.", redeem:"Échanger les points contre du solde", deposit_t:"Ajouter du solde", dep_amount:"Montant à déposer (MT)", dep_min:"Le minimum est de 50 MT.", dep_send:"Envoyer le dépôt", dep_sent:"Dépôt envoyé ! Nous confirmons le paiement.", dep_ok:"Dépôt confirmé", dep_no:"Dépôt rejeté", history:"Historique", tx_deposit:"Dépôt", tx_purchase:"Achat", tx_refund:"Remboursement", tx_points:"Points échangés", tx_adjustment:"Ajustement", wst_pending:"En attente", wst_confirmed:"Confirmé", wst_rejected:"Rejeté", wallet_bal:"Solde disponible", wallet_after:"Solde après l'achat", wallet_low:"Solde insuffisant. Alimentez d'abord votre portefeuille.", wallet_use:"Payer avec le solde", wallet_note:"Le solde sert à acheter sur R DIGITAL.", redeemed:"Points échangés contre du solde.", pts_need:"Il faut au moins 100 points.", go_deposit:"Déposer maintenant", no_tx:"Aucun mouvement pour l'instant."
 },
 es:{
   login:"Entrar", logout:"Salir", orders:"Mis pedidos", admin:"Panel", shop:"Tienda",
@@ -381,7 +399,9 @@ es:{
   no_orders:"Aún no tienes pedidos.", st_pending:"Pendiente de confirmación", st_paid:"Pagado, preparando", st_delivered:"Entregado", st_rejected:"Rechazado",
   access:"Acceso", back:"Volver", close:"Cerrar", demo:"Modo demo: nada sale de tu navegador.",
   sess_need:"Entra en tu cuenta para comprar.", soon:"Próximamente",
-  messages:"Mensajes", chat_t:"Chat", type_msg:"Escribe tu mensaje...", send_msg:"Enviar", no_msgs:"Aún no hay mensajes. Escribe el primero.", new_msg:"Nuevo mensaje de R DIGITAL", order_upd:"Pedido actualizado", install:"Instalar aplicación", install_ios:"iPhone: toca Compartir y luego Añadir a pantalla de inicio.", msg_fail:"No se pudo enviar el mensaje."
+  messages:"Mensajes", chat_t:"Chat", type_msg:"Escribe tu mensaje...", send_msg:"Enviar", no_msgs:"Aún no hay mensajes. Escribe el primero.", new_msg:"Nuevo mensaje de R DIGITAL", order_upd:"Pedido actualizado", install:"Instalar aplicación", install_ios:"iPhone: toca Compartir y luego Añadir a pantalla de inicio.", msg_fail:"No se pudo enviar el mensaje.",
+  pay_nat:"Pagar en Mozambique", pay_intl:"Pagar internacionalmente", paypal_to:"Envía el pago por PayPal a", email_l:"Email de PayPal", coin:"Moneda", network:"Red", addr:"Dirección", net_warn:"Envía solo USDT por la red BSC (BEP20). Otra moneda o red implica perder los fondos.", usd_amt:"Importe en USD", usdt_amt:"Importe en USDT", approx:"aprox.",
+  wallet:"Cartera", balance:"Saldo", points:"Puntos", pts_rule:"Gana 1 punto por cada 10 MT en pedidos entregados. 100 puntos valen 5 MT de saldo.", redeem:"Canjear puntos por saldo", deposit_t:"Añadir saldo", dep_amount:"Importe a depositar (MT)", dep_min:"El mínimo es 50 MT.", dep_send:"Enviar depósito", dep_sent:"¡Depósito enviado! Confirmaremos el pago.", dep_ok:"Depósito confirmado", dep_no:"Depósito rechazado", history:"Historial", tx_deposit:"Depósito", tx_purchase:"Compra", tx_refund:"Reembolso", tx_points:"Puntos canjeados", tx_adjustment:"Ajuste", wst_pending:"Pendiente", wst_confirmed:"Confirmado", wst_rejected:"Rechazado", wallet_bal:"Saldo disponible", wallet_after:"Saldo tras la compra", wallet_low:"Saldo insuficiente. Primero añade fondos a tu cartera.", wallet_use:"Pagar con saldo", wallet_note:"El saldo sirve para comprar en R DIGITAL.", redeemed:"Puntos canjeados por saldo.", pts_need:"Necesitas al menos 100 puntos.", go_deposit:"Depositar ahora", no_tx:"Aún sin movimientos."
 }};
 const TAG = {
  "chatgpt-plus":{pt:"IA mais poderosa para o seu dia a dia",en:"The most powerful AI for your daily life",ar:"أقوى ذكاء اصطناعي ليومك",fr:"L'IA la plus puissante au quotidien",es:"La IA más potente para tu día a día"},
@@ -421,9 +441,11 @@ const store = {
 const fmt = n => `${Number(n).toLocaleString("pt-PT",{maximumFractionDigits:2})} MT`;
 const fmtDate = d => new Date(d).toLocaleString("pt-PT",{dateStyle:"short",timeStyle:"short"});
 const CATS = ["ai","video","music","create","games"];
+const toUsd = mt => (Number(mt) / CONFIG.USDT_RATE);
+const usdTxt = mt => toUsd(mt).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
 const ALLOWED = ["image/jpeg","image/png","image/webp","application/pdf"];
 
-const S = { lang:"pt", products:[], user:null, profile:null, view:"shop", cat:"all", pending:null, orders:[], adminTab:"orders", unread:0, unreadMap:{}, pendingCount:0, chatOrder:null, chatMsgs:[] };
+const S = { lang:"pt", products:[], user:null, profile:null, view:"shop", cat:"all", pending:null, orders:[], adminTab:"orders", unread:0, unreadMap:{}, pendingCount:0, pendingDeps:0, balance:0, points:0, chatOrder:null, chatMsgs:[] };
 const t = k => (T[S.lang] && T[S.lang][k]) ?? T.en[k] ?? T.pt[k] ?? k;
 const tag = slug => (TAG[slug] && (TAG[slug][S.lang] || TAG[slug].en)) || "";
 const policy = k => POLICY[k][S.lang] || POLICY[k].en;
@@ -463,8 +485,11 @@ const api = DEMO ? {
       receipt_path:o.file ? "demo:"+o.file.name : null, status:"pending", delivery_note:null, created_at:new Date().toISOString() });
     store.set("orders", l); },
   async adminOrders(){ return store.get("orders", []).sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
-  async setOrder(id, status, note){ const l = store.get("orders", []); const o = l.find(x=>x.id===id); o.status=status; o.delivery_note=note||null; store.set("orders", l); },
-  async adminUsers(){ const u = store.get("user", null); return u ? [{ id:u.id, email:u.email, provider:"demo", created_at:new Date().toISOString(), last_sign_in_at:new Date().toISOString(), orders_count:store.get("orders",[]).length }] : []; },
+  async setOrder(id, status, note){ const l = store.get("orders", []); const o = l.find(x=>x.id===id); const old = o.status; o.status=status; o.delivery_note=note||null;
+    if(status==="delivered" && !o.points_awarded){ o.points_awarded = true; const k = "pts_"+o.user_id; store.set(k, (store.get(k,0)||0) + Math.floor(o.amount/10)); }
+    if(status==="rejected" && old!=="rejected" && o.method==="wallet"){ const w = store.get("wtx", []); if(!w.find(x=>x.order_id===id && x.kind==="refund")){ w.push({ id:"w"+Date.now(), user_id:o.user_id, kind:"refund", amount:o.amount, status:"confirmed", order_id:id, note:"Reembolso: "+o.product_name, created_at:new Date().toISOString() }); store.set("wtx", w); } }
+    store.set("orders", l); },
+  async adminUsers(){ const u = store.get("user", null); return u ? [{ id:u.id, email:u.email, provider:"demo", created_at:new Date().toISOString(), last_sign_in_at:new Date().toISOString(), orders_count:store.get("orders",[]).length, balance:0, points:store.get("pts_"+u.id,0) }] : []; },
   async receiptUrl(){ return null; },
   async messages(orderId){ return store.get("msgs", []).filter(m=>m.order_id===orderId).sort((a,b)=>a.created_at.localeCompare(b.created_at)); },
   async sendMessage(orderId, body){ const l = store.get("msgs", []); l.push({ id:"m"+Date.now()+Math.random().toString(36).slice(2,6), order_id:orderId, sender_id:S.user.id, from_admin:!!(S.profile&&S.profile.is_admin), body, read:false, created_at:new Date().toISOString() }); store.set("msgs", l); },
@@ -476,6 +501,18 @@ const api = DEMO ? {
     store.get("msgs", []).sort((a,b)=>b.created_at.localeCompare(a.created_at)).forEach(m=>{ let g = map.get(m.order_id); const o = orders.find(x=>x.id===m.order_id);
       if(!g){ g = { order_id:m.order_id, product:o&&o.product_name, email:o&&o.profiles&&o.profiles.email, last:m.body, last_at:m.created_at, unread:0 }; map.set(m.order_id,g); }
       if(!m.from_admin && !m.read) g.unread++; }); return [...map.values()]; },
+  async walletSummary(){ const w = store.get("wtx", []).filter(x=>x.user_id===S.user.id && x.status==="confirmed"); return { balance:w.reduce((a,x)=>a+Number(x.amount),0), points:store.get("pts_"+S.user.id, 0) }; },
+  async walletTx(){ return store.get("wtx", []).filter(x=>x.user_id===S.user.id).sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
+  async requestDeposit(d){ const l = store.get("wtx", []); l.push({ id:"w"+Date.now()+Math.random().toString(36).slice(2,5), user_id:S.user.id, profiles:{email:S.user.email}, kind:"deposit", amount:Number(d.amount), status:"pending", method:d.method, receipt_path:d.file?("demo:"+d.file.name):null, created_at:new Date().toISOString() }); store.set("wtx", l); },
+  async payWithWallet(o){ const p = S.products.find(x=>x.id===o.product_id); const w = await this.walletSummary(); if(w.balance < p.price) throw new Error("Saldo insuficiente");
+    const id = "o"+Date.now(); const ol = store.get("orders", []);
+    ol.push({ id, user_id:S.user.id, profiles:{email:S.user.email}, product_id:p.id, product_name:p.name, amount:p.price, method:"wallet", phone:o.phone, player_id:o.player_id, receipt_path:null, status:"paid", delivery_note:null, created_at:new Date().toISOString() }); store.set("orders", ol);
+    const l = store.get("wtx", []); l.push({ id:"w"+Date.now(), user_id:S.user.id, kind:"purchase", amount:-p.price, status:"confirmed", order_id:id, note:p.name, created_at:new Date().toISOString() }); store.set("wtx", l); },
+  async redeemPoints(n){ const k = "pts_"+S.user.id; const cur = store.get(k,0); if(n<100 || n%100 || cur<n) throw new Error("Pontos insuficientes"); store.set(k, cur-n);
+    const l = store.get("wtx", []); l.push({ id:"w"+Date.now(), user_id:S.user.id, kind:"points", amount:(n/100)*5, status:"confirmed", note:n+" pontos", created_at:new Date().toISOString() }); store.set("wtx", l); },
+  async adminDeposits(){ return store.get("wtx", []).filter(x=>x.kind==="deposit").sort((a,b)=>b.created_at.localeCompare(a.created_at)); },
+  async reviewDeposit(id, status){ const l = store.get("wtx", []); const w = l.find(x=>x.id===id); if(w && w.status==="pending") w.status = status; store.set("wtx", l); },
+  async pendingDeposits(){ return store.get("wtx", []).filter(x=>x.kind==="deposit" && x.status==="pending").length; },
   subscribe(){}, unsubscribe(){}
 } : {
   async init(){
@@ -524,8 +561,22 @@ const api = DEMO ? {
       .on("postgres_changes", { event:"INSERT", schema:"public", table:"orders" }, p => h.orderInsert(p.new))
       .on("postgres_changes", { event:"UPDATE", schema:"public", table:"orders" }, p => h.orderUpdate(p.new))
       .on("postgres_changes", { event:"INSERT", schema:"public", table:"messages" }, p => h.msgInsert(p.new))
+      .on("postgres_changes", { event:"INSERT", schema:"public", table:"wallet_tx" }, p => h.walletInsert(p.new))
+      .on("postgres_changes", { event:"UPDATE", schema:"public", table:"wallet_tx" }, p => h.walletUpdate(p.new))
       .subscribe(); },
-  unsubscribe(){ if(this._ch){ try{ sb.removeChannel(this._ch); }catch(e){} this._ch = null; } }
+  unsubscribe(){ if(this._ch){ try{ sb.removeChannel(this._ch); }catch(e){} this._ch = null; } },
+  async walletSummary(){ const { data:b } = await sb.rpc("wallet_balance"); const { data:pr } = await sb.from("profiles").select("points").eq("id", S.user.id).maybeSingle(); return { balance:Number(b||0), points:(pr && pr.points) || 0 }; },
+  async walletTx(){ const { data, error } = await sb.from("wallet_tx").select("*").order("created_at",{ascending:false}).limit(100); if(error) throw error; return data; },
+  async requestDeposit(d){
+    const ext = (d.file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,5);
+    const path = `${S.user.id}/dep-${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const up = await sb.storage.from("receipts").upload(path, d.file, { contentType:d.file.type, upsert:false }); if(up.error) throw up.error;
+    const { error } = await sb.rpc("request_deposit", { p_amount:d.amount, p_method:d.method, p_receipt:path }); if(error) throw error; },
+  async payWithWallet(o){ const { error } = await sb.rpc("pay_with_wallet", { p_product:o.product_id, p_player:o.player_id || "", p_phone:o.phone || "" }); if(error) throw error; },
+  async redeemPoints(n){ const { error } = await sb.rpc("redeem_points", { p_points:n }); if(error) throw error; },
+  async adminDeposits(){ const { data, error } = await sb.from("wallet_tx").select("*, profiles(email)").eq("kind","deposit").order("created_at",{ascending:false}).limit(200); if(error) throw error; return data; },
+  async reviewDeposit(id, status){ const { error } = await sb.rpc("admin_review_deposit", { p_id:id, p_status:status, p_note:"" }); if(error) throw error; },
+  async pendingDeposits(){ const { count, error } = await sb.from("wallet_tx").select("id",{count:"exact",head:true}).eq("kind","deposit").eq("status","pending"); if(error) throw error; return count || 0; }
 };
 
 /* ======================================================================
@@ -543,6 +594,7 @@ function renderNav(){
     const adm = !!(S.profile && S.profile.is_admin);
     if(deferredInstall) h += `<button class="btn" id="installBtn">${esc(t("install"))}</button>`;
     const bo = (!adm && S.unread) ? `<span class="nbadge">${S.unread}</span>` : "";
+    if(!adm) h += `<button class="btn" data-go="wallet">${esc(t("wallet"))}<span class="muted" style="margin-inline-start:6px;font-weight:500">${esc(fmt(S.balance))}</span></button>`;
     h += `<button class="btn" data-go="orders">${esc(t("orders"))}${bo}</button>`;
     const ba = adm && (S.unread + S.pendingCount) ? `<span class="nbadge">${S.unread + S.pendingCount}</span>` : "";
     if(adm) h += `<button class="btn" data-go="admin">${esc(t("admin"))}${ba}</button>`;
@@ -570,7 +622,7 @@ function renderShop(){
     <article class="card">
       <div class="row"><div class="mono cat-${esc(p.category)}" aria-hidden="true"><span>${esc(initials(p.name))}</span><img src="logo-${esc(p.slug)}.png" alt="" loading="lazy" onerror="this.remove()"></div><h3>${esc(p.name)}</h3></div>
       <p class="tag">${esc(tag(p.slug))}</p>
-      <div class="foot"><div class="price">${esc(Number(p.price).toLocaleString("pt-PT"))}<small>MT</small></div>
+      <div class="foot"><div class="price">${esc(Number(p.price).toLocaleString("pt-PT"))}<small>MT</small>${Number(p.price) > 0 ? `<span class="usd">${esc(t("approx"))} ${esc(usdTxt(p.price))} USDT</span>` : ""}</div>
         <button class="btn primary" data-buy="${esc(p.id)}">${esc(t("buy"))}</button></div>
     </article>`).join("");
   const faq = [1,2,3,4].map(i => `<details><summary>${esc(t("q"+i))}</summary><p>${esc(t("a"+i))}</p></details>`).join("");
@@ -614,11 +666,42 @@ function renderOrders(){
     <div class="olist">${rows || `<p class="muted">${esc(t("no_orders"))}</p>`}</div></section>`;
 }
 
+/* ---------- Carteira ---------- */
+const depState = { method:"mpesa" };
+function depAmount(){ const el = $("#dep-amount"); return el ? (Number(el.value) || 0) : 0; }
+function updateDepPay(){ const el = $("#dep-pay"); if(el) el.innerHTML = payBlock(depState.method, depAmount()); }
+function renderWallet(tx){
+  const mbtn = k => `<button type="button" data-dmethod="${k}" aria-pressed="${depState.method===k}">${esc(CONFIG.PAYMENTS[k].label.split(" ")[0])}</button>`;
+  const rows = tx.map(x => {
+    const neg = Number(x.amount) < 0;
+    const cls = x.status === "confirmed" ? "st-delivered" : (x.status === "pending" ? "st-pending" : "st-rejected");
+    return `<div class="order"><div class="top"><strong>${esc(t("tx_" + x.kind))}${x.note ? " · " + esc(x.note) : ""}</strong><b style="color:var(${neg ? "--bad" : "--ok"})">${neg ? "" : "+"}${esc(fmt(x.amount))}</b></div>
+      <div class="muted">${esc(fmtDate(x.created_at))} · <span class="badge ${cls}">${esc(t("wst_" + x.status))}</span></div></div>`;
+  }).join("");
+  return `<section><div class="sec-head"><h2>${esc(t("wallet"))}</h2><button class="btn" data-go="shop">${esc(t("back"))}</button></div>
+    <div class="stats">
+      <div class="stat"><b>${esc(fmt(S.balance))}</b><span class="muted">${esc(t("balance"))} · ${esc(t("approx"))} ${esc(usdTxt(S.balance))} USDT</span></div>
+      <div class="stat"><b>${esc(S.points)}</b><span class="muted">${esc(t("points"))}</span></div></div>
+    <p class="muted" style="margin:0 0 10px">${esc(t("pts_rule"))}</p>
+    <button class="btn sm" data-redeem="1" ${S.points >= 100 ? "" : "disabled"}>${esc(t("redeem"))}</button>
+    <div class="sec-head" style="margin-top:28px"><h2 style="font-size:20px">${esc(t("deposit_t"))}</h2></div>
+    <form id="depForm" class="box" style="max-width:480px;gap:12px">
+      <label>${esc(t("dep_amount"))}<input type="number" id="dep-amount" min="50" max="100000" step="1" inputmode="numeric" required></label>
+      <div><div class="mgroup">${esc(t("pay_nat"))}</div><div class="methods">${CONFIG.NATIONAL.map(mbtn).join("")}</div>
+        <div class="mgroup" style="margin-top:12px">${esc(t("pay_intl"))}</div><div class="methods two">${CONFIG.INTERNATIONAL.map(mbtn).join("")}</div></div>
+      <div id="dep-pay">${payBlock(depState.method, depAmount())}</div>
+      <label>${esc(t("receipt"))}<input type="file" id="dep-file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="muted" style="font-weight:400">${esc(t("receipt_h"))}</span></label>
+      <p class="err" id="dep-err" role="alert"></p>
+      <button class="btn primary block" type="submit" id="depBtn">${esc(t("dep_send"))}</button></form>
+    <div class="sec-head" style="margin-top:28px"><h2 style="font-size:20px">${esc(t("history"))}</h2></div>
+    <div class="olist">${rows || `<p class="muted">${esc(t("no_tx"))}</p>`}</div></section>`;
+}
+
 /* ---------- Painel do administrador (português) ---------- */
 const ST_PT = { pending:"Pendente", paid:"Pago", delivered:"Entregue", rejected:"Rejeitado" };
 async function renderAdmin(){
-  const tabs = [["orders","Pedidos"],["comms","Comunicações"],["clients","Clientes"],["products","Produtos"]]
-    .map(([k,v]) => `<button data-atab="${k}" aria-pressed="${S.adminTab===k}">${v}${k==="comms" && S.unread ? `<span class="nbadge">${S.unread}</span>` : ""}</button>`).join("");
+  const tabs = [["orders","Pedidos"],["deposits","Depósitos"],["comms","Comunicações"],["clients","Clientes"],["products","Produtos"]]
+    .map(([k,v]) => `<button data-atab="${k}" aria-pressed="${S.adminTab===k}">${v}${k==="comms" && S.unread ? `<span class="nbadge">${S.unread}</span>` : ""}${k==="deposits" && S.pendingDeps ? `<span class="nbadge">${S.pendingDeps}</span>` : ""}</button>`).join("");
   let nbox = "";
   if(!("Notification" in window)) nbox = "";
   else if(Notification.permission === "default") nbox = `<div class="notifbox"><span>Receba aviso de novos pedidos e mensagens neste aparelho.</span><button class="btn sm primary" id="notifBtn">Ativar notificações</button></div>`;
@@ -629,6 +712,7 @@ async function renderAdmin(){
     ${nbox}<div class="tabs" style="margin-bottom:14px">${tabs}</div><div id="adminBody">${body}</div></section>`;
   try{
     if(S.adminTab === "orders") body = await adminOrdersHtml();
+    else if(S.adminTab === "deposits") body = await adminDepositsHtml();
     else if(S.adminTab === "comms") body = await adminCommsHtml();
     else if(S.adminTab === "clients") body = await adminClientsHtml();
     else body = adminProductsHtml();
@@ -669,6 +753,17 @@ async function adminCommsHtml(){
       <button class="btn sm primary" data-chat="${esc(c.order_id)}" data-ctitle="${esc((c.email || "") + " · " + (c.product || ""))}">Abrir</button></div></div>`).join("");
   return `<div class="olist">${rows || '<p class="muted">Ainda não há conversas. Os clientes escrevem a partir de "Meus pedidos".</p>'}</div>`;
 }
+async function adminDepositsHtml(){
+  const list = await api.adminDeposits();
+  const stp = { pending:"Pendente", confirmed:"Confirmado", rejected:"Rejeitado" };
+  const rows = list.map(d => `<tr><td>${esc(fmtDate(d.created_at))}</td><td>${esc((d.profiles && d.profiles.email) || "")}</td>
+    <td><strong>${esc(fmt(d.amount))}</strong><br><span class="muted">${esc((CONFIG.PAYMENTS[d.method]||{}).label || d.method)}</span></td>
+    <td>${d.receipt_path ? `<button class="btn sm" data-receipt="${esc(d.receipt_path)}">Ver comprovativo</button>` : '<span class="muted">sem anexo</span>'}</td>
+    <td><span class="badge ${d.status==="confirmed" ? "st-delivered" : d.status==="pending" ? "st-pending" : "st-rejected"}">${esc(stp[d.status])}</span></td>
+    <td>${d.status === "pending" ? `<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm primary" data-rev="confirmed" data-id="${esc(d.id)}">Confirmar</button><button class="btn sm" data-rev="rejected" data-id="${esc(d.id)}">Rejeitar</button></div>` : ""}</td></tr>`).join("");
+  return `<div class="tbl"><table><thead><tr><th>Data</th><th>Cliente</th><th>Valor</th><th>Prova</th><th>Estado</th><th>Ação</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="6" class="muted">Ainda não há depósitos.</td></tr>'}</tbody></table></div>`;
+}
 async function adminClientsHtml(){
   const list = await api.adminUsers();
   const never = list.filter(u => !u.last_sign_in_at).length;
@@ -676,9 +771,9 @@ async function adminClientsHtml(){
     <div class="stat"><b>${list.length-never}</b><span class="muted">Já entraram</span></div>
     <div class="stat"><b>${never}</b><span class="muted">Nunca entraram</span></div></div>`;
   const rows = list.map(u => `<tr><td>${esc(u.email || "")}</td><td>${esc(u.provider)}</td><td>${esc(fmtDate(u.created_at))}</td>
-    <td>${u.last_sign_in_at ? esc(fmtDate(u.last_sign_in_at)) : '<span class="badge st-pending">nunca entrou</span>'}</td><td>${esc(u.orders_count)}</td></tr>`).join("");
-  return stats + `<div class="tbl"><table><thead><tr><th>Email</th><th>Entrada por</th><th>Criada em</th><th>Último acesso</th><th>Pedidos</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="5" class="muted">Sem clientes.</td></tr>'}</tbody></table></div>`;
+    <td>${u.last_sign_in_at ? esc(fmtDate(u.last_sign_in_at)) : '<span class="badge st-pending">nunca entrou</span>'}</td><td>${esc(u.orders_count)}</td><td>${esc(fmt(u.balance || 0))}</td><td>${esc(u.points || 0)}</td></tr>`).join("");
+  return stats + `<div class="tbl"><table><thead><tr><th>Email</th><th>Entrada por</th><th>Criada em</th><th>Último acesso</th><th>Pedidos</th><th>Saldo</th><th>Pontos</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="7" class="muted">Sem clientes.</td></tr>'}</tbody></table></div>`;
 }
 function adminProductsHtml(){
   const rows = S.products.map(p => `<tr>
@@ -719,31 +814,56 @@ function authModal(msg){
 }
 
 let coState = { method:"mpesa" };
+function copyRow(label, value, big){
+  return `<div class="copy"><span><span class="k">${esc(label)}:</span> <code${big ? ' style="font-size:13px"' : ""}>${esc(value)}</code></span><button type="button" class="btn sm" data-copy="${esc(value)}">${esc(t("copy"))}</button></div>`;
+}
 function payBlock(method, amount){
   const p = CONFIG.PAYMENTS[method];
+  if(method === "wallet"){
+    const after = S.balance - Number(amount);
+    if(after < 0) return `<div class="box"><div><span class="k">${esc(t("wallet_bal"))}:</span> <b>${esc(fmt(S.balance))}</b></div><div class="err">${esc(t("wallet_low"))}</div><div><button type="button" class="btn sm primary" data-go="wallet" data-closedlg="1">${esc(t("go_deposit"))}</button></div></div>`;
+    return `<div class="box"><div><span class="k">${esc(t("wallet_bal"))}:</span> <b>${esc(fmt(S.balance))}</b></div><div><span class="k">${esc(t("wallet_after"))}:</span> <b>${esc(fmt(after))}</b></div><div class="muted">${esc(t("wallet_note"))}</div></div>`;
+  }
+  if(method === "paypal"){
+    if(!p.email) return `<div class="box"><span>${esc(t("not_cfg"))}</span></div>`;
+    return `<div class="box"><div class="k">${esc(t("paypal_to"))}</div>${copyRow(t("email_l"), p.email)}
+      <div><span class="k">${esc(t("usd_amt"))}:</span> <b>${esc(usdTxt(amount))} USD</b> <span class="muted">(${esc(fmt(amount))})</span></div></div>`;
+  }
+  if(method === "binance"){
+    if(!p.address) return `<div class="box"><span>${esc(t("not_cfg"))}</span></div>`;
+    return `<div class="box"><div class="k">${esc(t("pay_to"))}</div>
+      <div><span class="k">${esc(t("coin"))}:</span> <b>${esc(p.coin)}</b> · <span class="k">${esc(t("network"))}:</span> <b>${esc(p.network)}</b></div>
+      ${copyRow(t("addr"), p.address, true)}
+      <div><span class="k">${esc(t("usdt_amt"))}:</span> <b>${esc(usdTxt(amount))} USDT</b> <span class="muted">(${esc(fmt(amount))})</span></div>
+      <div class="warn">${esc(t("net_warn"))}</div></div>`;
+  }
   const rows = [];
   if(p.holder) rows.push(`<div><span class="k">${esc(t("holder"))}:</span> <b>${esc(p.holder)}</b></div>`);
   if(method === "bim"){
-    if(p.number) rows.push(`<div class="copy"><span><span class="k">${esc(t("account"))}:</span> <code>${esc(p.number)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.number)}">${esc(t("copy"))}</button></div>`);
-    if(p.nib) rows.push(`<div class="copy"><span><span class="k">${esc(t("nib"))}:</span> <code>${esc(p.nib)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.nib)}">${esc(t("copy"))}</button></div>`);
+    if(p.number) rows.push(copyRow(t("account"), p.number));
+    if(p.nib) rows.push(copyRow(t("nib"), p.nib));
   } else if(p.number){
-    rows.push(`<div class="copy"><span><span class="k">${esc(t("number"))}:</span> <code>${esc(p.number)}</code></span><button type="button" class="btn sm" data-copy="${esc(p.number)}">${esc(t("copy"))}</button></div>`);
+    rows.push(copyRow(t("number"), p.number));
   }
   if(!rows.length) return `<div class="box"><span>${esc(t("not_cfg"))}</span></div>`;
   return `<div class="box"><div class="k">${esc(t("pay_to"))}</div>${rows.join("")}<div><span class="k">${esc(t("amount"))}:</span> <b>${esc(fmt(amount))}</b></div></div>`;
 }
 function checkoutModal(p){
-  const methods = Object.entries(CONFIG.PAYMENTS).map(([k,v]) => `<button type="button" data-method="${k}" aria-pressed="${coState.method===k}">${esc(v.label.split(" ")[0])}</button>`).join("");
+  const mbtn = k => `<button type="button" data-method="${k}" aria-pressed="${coState.method===k}">${esc(CONFIG.PAYMENTS[k].label.split(" ")[0])}</button>`;
+  const wbtn = `<div class="mgroup">${esc(t("wallet"))}</div><div class="methods" style="grid-template-columns:1fr"><button type="button" data-method="wallet" aria-pressed="${coState.method==="wallet"}">${esc(t("wallet"))} · ${esc(fmt(S.balance))}</button></div>
+    <div class="mgroup" style="margin-top:12px">${esc(t("pay_nat"))}</div>`;
+  const methods = `${wbtn}<div class="methods">${CONFIG.NATIONAL.map(mbtn).join("")}</div>
+    <div class="mgroup" style="margin-top:12px">${esc(t("pay_intl"))}</div><div class="methods two">${CONFIG.INTERNATIONAL.map(mbtn).join("")}</div>`;
   openDlg(`<div class="m-head"><h3>${esc(t("co_t"))}</h3><button class="x" data-close aria-label="${esc(t("close"))}">×</button></div>
   <form class="m-body" id="coForm" data-pid="${esc(p.id)}">
     <div class="sum"><strong>${esc(p.name)}</strong><span class="price" style="font-size:21px">${esc(fmt(p.price))}</span></div>
-    <div><div style="font-weight:600;font-size:14px;margin-bottom:8px">${esc(t("pay_with"))}</div><div class="methods">${methods}</div></div>
+    <div><div style="font-weight:600;font-size:14px;margin-bottom:8px">${esc(t("pay_with"))}</div>${methods}</div>
     <div id="payInfo">${payBlock(coState.method, p.price)}</div>
     <label>${esc(t("your_phone"))}<input type="tel" id="co-phone" inputmode="tel" autocomplete="tel" maxlength="20"></label>
     ${p.needs_player_id ? `<label>${esc(t("player"))}<input type="text" id="co-pid" required maxlength="24" inputmode="numeric"></label>` : ""}
-    <label>${esc(t("receipt"))}<input type="file" id="co-file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="muted" style="font-weight:400">${esc(t("receipt_h"))}</span></label>
+    <label id="rcptWrap"${coState.method === "wallet" ? " hidden" : ""}>${esc(t("receipt"))}<input type="file" id="co-file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="muted" style="font-weight:400">${esc(t("receipt_h"))}</span></label>
     <p class="err" id="co-err" role="alert"></p>
-    <button class="btn primary block" type="submit" id="coBtn">${esc(t("send"))}</button>
+    <button class="btn primary block" type="submit" id="coBtn">${esc(coState.method === "wallet" ? t("wallet_use") : t("send"))}</button>
   </form>`);
 }
 function policyModal(k){
@@ -769,6 +889,11 @@ async function render(){
     try{ S.unreadMap = await api.unreadSummary(); }catch(e){}
     $("#app").innerHTML = renderOrders() + renderFooter(); return;
   }
+  if(S.view === "wallet" && S.user){
+    let tx = [];
+    try{ const w = await api.walletSummary(); S.balance = w.balance; S.points = w.points; tx = await api.walletTx(); }catch(e){}
+    $("#app").innerHTML = renderWallet(tx) + renderFooter(); return;
+  }
   S.view = "shop";
   $("#app").innerHTML = renderShop() + renderFooter();
 }
@@ -784,19 +909,34 @@ document.addEventListener("click", async e => {
   else if(el.id === "installBtn"){ if(deferredInstall){ deferredInstall.prompt(); deferredInstall = null; renderNav(); } }
   else if(el.id === "notifBtn"){ try{ await Notification.requestPermission(); }catch(_){} renderAdmin(); }
   else if(d.chat){ openChat(d.chat, d.ctitle || t("chat_t")); }
-  else if(d.go){ S.view = d.go; render(); window.scrollTo(0,0); }
+  else if(d.go){ if(d.closedlg) closeDlg(); S.view = d.go; render(); window.scrollTo(0,0); }
   else if(d.cat){ S.cat = d.cat; render(); }
   else if(d.close !== undefined){ closeDlg(); }
   else if(d.policy){ policyModal(d.policy); }
   else if(d.buy){
     const p = S.products.find(x => String(x.id) === d.buy); if(!p) return;
-    if(!S.user){ S.pending = p.id; authModal(); } else { coState.method = "mpesa"; checkoutModal(p); }
+    if(!S.user){ S.pending = p.id; authModal(); } else { coState.method = (S.balance >= Number(p.price) && Number(p.price) > 0) ? "wallet" : "mpesa"; checkoutModal(p); }
   }
   else if(d.method){
     coState.method = d.method;
     document.querySelectorAll("[data-method]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.method === d.method)));
     const p = S.products.find(x => String(x.id) === $("#coForm").dataset.pid);
     $("#payInfo").innerHTML = payBlock(d.method, p.price);
+    const isW = d.method === "wallet", rw = $("#rcptWrap"); if(rw) rw.hidden = isW;
+    $("#coBtn").textContent = isW ? t("wallet_use") : t("send");
+  }
+  else if(d.dmethod){
+    depState.method = d.dmethod;
+    document.querySelectorAll("[data-dmethod]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.dmethod === d.dmethod)));
+    updateDepPay();
+  }
+  else if(d.redeem !== undefined){
+    const n = Math.floor(S.points / 100) * 100;
+    if(n < 100){ toast(t("pts_need")); return; }
+    try{ await api.redeemPoints(n); toast(t("redeemed")); await refreshUnread(false); render(); }catch(err){ toast((err && err.message) || t("auth_fail")); }
+  }
+  else if(d.rev){
+    try{ await api.reviewDeposit(d.id, d.rev); toast("Depósito atualizado"); await refreshUnread(); renderAdmin(); }catch(err){ toast("Erro: " + (err.message || err)); }
   }
   else if(d.copy){ copyText(d.copy, el); }
   else if(d.oauth){ try{ await api.oauth(d.oauth); }catch(err){ const x = $("#au-err"); if(x) x.textContent = t("auth_fail"); } }
@@ -815,6 +955,7 @@ document.addEventListener("click", async e => {
     catch(err){ toast("Erro: " + (err.message || err)); }
   }
 });
+document.addEventListener("input", e => { if(e.target.id === "dep-amount") updateDepPay(); });
 document.addEventListener("keydown", e => {
   if(e.target.id === "chatIn" && e.key === "Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); const f = $("#chatForm"); if(f) f.requestSubmit(); }
 });
@@ -841,6 +982,14 @@ document.addEventListener("submit", async e => {
   }
   else if(f.id === "coForm"){
     const err = $("#co-err"), btn = $("#coBtn"); err.textContent = "";
+    if(coState.method === "wallet"){
+      btn.disabled = true; btn.textContent = t("sending");
+      try{
+        await api.payWithWallet({ product_id:f.dataset.pid, phone:$("#co-phone").value.trim().slice(0,20), player_id: $("#co-pid") ? $("#co-pid").value.trim().slice(0,24) : null });
+        closeDlg(); toast(t("sent")); await refreshUnread(false); S.view = "orders"; render(); window.scrollTo(0,0);
+      }catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("auth_fail"); btn.disabled = false; btn.textContent = t("wallet_use"); }
+      return;
+    }
     const file = $("#co-file").files[0];
     if(!file){ err.textContent = t("need_receipt"); return; }
     if(!ALLOWED.includes(file.type) || file.size > 5*1024*1024){ err.textContent = t("bad_file"); return; }
@@ -860,6 +1009,16 @@ document.addEventListener("submit", async e => {
       S.chatMsgs = await api.messages(S.chatOrder); paintChat();
     }catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("msg_fail"); }
     btn.disabled = false; inp.focus();
+  }
+  else if(f.id === "depForm"){
+    const err = $("#dep-err"), btn = $("#depBtn"); err.textContent = "";
+    const amount = Number($("#dep-amount").value), file = $("#dep-file").files[0];
+    if(!(amount >= 50)){ err.textContent = t("dep_min"); return; }
+    if(!file){ err.textContent = t("need_receipt"); return; }
+    if(!ALLOWED.includes(file.type) || file.size > 5*1024*1024){ err.textContent = t("bad_file"); return; }
+    btn.disabled = true; btn.textContent = t("sending");
+    try{ await api.requestDeposit({ amount, method:depState.method, file }); toast(t("dep_sent")); await refreshUnread(false); render(); }
+    catch(ex){ err.textContent = (ex && ex.message) ? ex.message : t("auth_fail"); btn.disabled = false; btn.textContent = t("dep_send"); }
   }
   else if(f.id === "newProd"){
     const name = $("#np-name").value.trim();
@@ -918,11 +1077,22 @@ function setBadge(n){ try{ if(navigator.setAppBadge){ if(n > 0) navigator.setApp
 async function refreshUnread(redraw = true){
   if(!S.user) return;
   try{ S.unreadMap = await api.unreadSummary(); S.unread = Object.values(S.unreadMap).reduce((a,b)=>a+b, 0); }catch(e){}
-  if(S.profile && S.profile.is_admin){ try{ S.pendingCount = await api.pendingCount(); }catch(e){} } else S.pendingCount = 0;
+  if(S.profile && S.profile.is_admin){ try{ const po = await api.pendingCount(); S.pendingDeps = await api.pendingDeposits(); S.pendingCount = po + S.pendingDeps; }catch(e){} }
+  else { S.pendingCount = 0; S.pendingDeps = 0; try{ const w = await api.walletSummary(); S.balance = w.balance; S.points = w.points; }catch(e){} }
   setBadge(S.unread + S.pendingCount);
   if(redraw) renderNav();
 }
 const live = {
+  async walletInsert(w){
+    const adm = !!(S.profile && S.profile.is_admin);
+    if(adm && w.kind === "deposit"){ notify("Novo depósito", `${fmt(w.amount)} · ${(CONFIG.PAYMENTS[w.method]||{}).label || w.method}`); await refreshUnread(); if(S.view === "admin") renderAdmin(); return; }
+    if(S.user && w.user_id === S.user.id){ await refreshUnread(); if(S.view === "wallet") render(); }
+  },
+  async walletUpdate(w){
+    if(!S.user || (S.profile && S.profile.is_admin) || w.user_id !== S.user.id) return;
+    if(w.kind === "deposit" && w.status !== "pending") notify(w.status === "confirmed" ? t("dep_ok") : t("dep_no"), fmt(w.amount));
+    await refreshUnread(); if(S.view === "wallet") render();
+  },
   async orderInsert(o){
     if(!(S.profile && S.profile.is_admin)) return;
     notify("Novo pedido", `${o.product_name} · ${fmt(o.amount)}`);
